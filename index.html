@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>晚自习留校名单 | 育华中学事件调查档案</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --deep-blue: #0a0e1a;
+  --mid-blue: #141828;
+  --accent-red: #7a1f2b;
+  --accent-gold: #b8923a;
+  --accent-cold: #3a5a7c;
+  --text-light: #d8d4cf;
+  --text-dim: #6a6a7a;
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--deep-blue);
+  color: var(--text-light);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('school-night.jpg') center/cover no-repeat;
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+  filter: brightness(0.5) contrast(1.2);
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 扫描线动画 */
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  z-index: 2;
+  opacity: 0.4;
+  animation: scan 6s linear infinite;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100vh; }
+}
+
+/* 主内容区 */
+.main-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  letter-spacing: 0.5em;
+  color: var(--accent-gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.5s forwards;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  position: relative;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 1s forwards;
+}
+
+.title .glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.title .glitch::before,
+.title .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.title .glitch::before {
+  color: var(--accent-red);
+  animation: glitch-1 3s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+.title .glitch::after {
+  color: var(--accent-cold);
+  animation: glitch-2 2.5s infinite linear alternate-reverse;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+@keyframes glitch-1 {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, 1px); }
+  94% { transform: translate(2px, -1px); }
+  96% { transform: translate(-1px, 2px); }
+}
+
+@keyframes glitch-2 {
+  0%, 88%, 100% { transform: translate(0); }
+  90% { transform: translate(2px, -1px); }
+  93% { transform: translate(-2px, 1px); }
+  96% { transform: translate(1px, -2px); }
+}
+
+.subtitle {
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  color: var(--text-dim);
+  letter-spacing: 0.3em;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 1.5s forwards;
+}
+
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 1.8s forwards;
+}
+
+.start-btn {
+  position: relative;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: var(--text-light);
+  background: transparent;
+  border: 1px solid rgba(184, 146, 58, 0.4);
+  cursor: pointer;
+  transition: all 0.5s ease;
+  opacity: 0;
+  animation: fadeInUp 1s ease 2.2s forwards;
+  font-family: 'Noto Sans SC', sans-serif;
+  overflow: hidden;
+}
+
+.start-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(122, 31, 43, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.start-btn:hover::before { left: 100%; }
+
+.start-btn:hover {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 30px rgba(122, 31, 43, 0.2);
+  letter-spacing: 0.4em;
+}
+
+.hint {
+  position: absolute;
+  bottom: 3rem;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeInUp 1s ease 3s forwards;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.hint .warning {
+  color: var(--accent-red);
+  opacity: 0.7;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(184, 146, 58, 0.3);
+  border-radius: 50%;
+  animation: float-up linear infinite;
+}
+
+@keyframes float-up {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--deep-blue);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-gold);
+  animation: loading-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* 时间显示 */
+.time-display {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeInUp 1s ease 2.5s forwards;
+  z-index: 10;
+}
+
+.time-display .blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="loading-text">正在连接校园公示系统...</div>
+</div>
+
+<div class="scan-line"></div>
+<div class="particles" id="particles"></div>
+
+<div class="time-display" id="time-display">
+  2025.10.15 <span class="blink">_</span>
+</div>
+
+<div class="main-content">
+  <div class="tag">—— 校园解谜调查 ——</div>
+  <h1 class="title">
+    <span class="glitch" data-text="晚自习留校名单">晚自习留校名单</span>
+  </h1>
+  <p class="subtitle">育华中学 · 高三（7）班 · 事件调查档案</p>
+  <div class="divider"></div>
+  <button class="start-btn" onclick="startGame()">开始调查</button>
+
+  <div class="hint">
+    <span class="warning">注意：</span>本档案包含未公开的校园记录<br>
+    部分内容可能涉及敏感信息，请谨慎浏览<br>
+    <span style="opacity:0.5;margin-top:0.5rem;display:block;">本网站纯属虚构，仅供娱乐解谜</span>
+  </div>
+</div>
+
+<script>
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    container.appendChild(p);
+  }
+}
+
+window.addEventListener('load', () => {
+  createParticles();
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hidden');
+  }, 1500);
+});
+
+function startGame() {
+  document.body.style.transition = 'opacity 1s ease';
+  document.body.style.opacity = '0';
+  setTimeout(() => {
+    window.location.href = 'game.html';
+  }, 1000);
+}
+</script>
+</body>
+</html>
