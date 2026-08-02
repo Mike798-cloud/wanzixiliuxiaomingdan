@@ -1,0 +1,263 @@
+/** 通用付费打赏浮层样式 - abc studio **/
+
+.paywall-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 18, 0.72);
+  backdrop-filter: blur(6px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.paywall-overlay.paywall-show {
+  opacity: 1;
+}
+.paywall-overlay.paywall-closing {
+  opacity: 0;
+}
+
+.paywall-card {
+  background: linear-gradient(145deg, #101522, #1b2030 58%, #231922);
+  border-radius: 20px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(184, 146, 58, 0.28);
+  max-width: 460px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.paywall-overlay.paywall-show .paywall-card {
+  transform: scale(1) translateY(0);
+}
+
+.paywall-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #7b8298;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s, transform 0.2s;
+  line-height: 1;
+  padding: 4px 8px;
+}
+.paywall-close:hover {
+  color: #d8d4cf;
+  transform: rotate(90deg);
+}
+
+.paywall-card-inner {
+  padding: 30px 28px 24px;
+}
+
+/* 头部 */
+.paywall-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.paywall-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.paywall-heart {
+  font-size: 1.3rem;
+  color: #b8923a;
+  animation: paywallHeartbeat 1.5s ease-in-out infinite;
+}
+@keyframes paywallHeartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+.paywall-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f1e7d0;
+  letter-spacing: 1px;
+}
+.paywall-subtitle {
+  font-size: 0.82rem;
+  color: #8d96ad;
+  letter-spacing: 0.5px;
+}
+
+/* 收款码区域 */
+.paywall-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.paywall-qr-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+.paywall-qr-tip {
+  font-size: 0.72rem;
+  color: #8d96ad;
+  margin-top: 6px;
+  text-align: center;
+  line-height: 1.5;
+}
+.paywall-qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.paywall-qr-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px rgba(255, 200, 150, 0.2);
+  pointer-events: none;
+}
+
+/* 文案区域 */
+.paywall-message {
+  text-align: center;
+  width: 100%;
+}
+.paywall-msg-warm {
+  font-size: 0.95rem;
+  color: #e4d2a3;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.paywall-msg-body {
+  font-size: 0.84rem;
+  color: #b7bdca;
+  line-height: 1.9;
+  margin-bottom: 10px;
+}
+.paywall-msg-body strong {
+  color: #b8923a;
+}
+.paywall-msg-cute {
+  font-size: 0.82rem;
+  color: #9aa6bc;
+  line-height: 1.8;
+  padding: 8px 14px;
+  background: rgba(184, 146, 58, 0.1);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.paywall-msg-warm2 {
+  font-size: 0.82rem;
+  color: #9aa6bc;
+  line-height: 1.7;
+}
+
+/* 底部 */
+.paywall-footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(184, 146, 58, 0.24);
+}
+.paywall-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: #7f8aa2;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding: 0 4px;
+}
+.paywall-hint-icon {
+  flex-shrink: 0;
+}
+.paywall-btns {
+  display: flex;
+  gap: 10px;
+}
+.paywall-btn {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+}
+.paywall-btn-support {
+  background: linear-gradient(135deg, #7a1f2b, #b8923a);
+  color: #fff5df;
+  box-shadow: 0 4px 18px rgba(122, 31, 43, 0.35);
+}
+.paywall-btn-support:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(184, 146, 58, 0.32);
+}
+.paywall-btn-later {
+  background: rgba(255, 255, 255, 0.06);
+  color: #9aa6bc;
+  border: 1px solid rgba(184, 146, 58, 0.18);
+}
+.paywall-btn-later:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.paywall-studio {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #5e6983;
+  margin-top: 14px;
+  letter-spacing: 1px;
+}
+
+/* 感谢toast */
+.paywall-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(20, 24, 40, 0.96);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  z-index: 10001;
+  opacity: 0;
+  transition: all 0.4s;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+.paywall-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+  .paywall-card-inner {
+    padding: 24px 18px 18px;
+  }
+  .paywall-qr-wrapper {
+    width: 110px;
+    height: 110px;
+  }
+  .paywall-btns {
+    flex-direction: column;
+  }
+  .paywall-message {
+    font-size: 0.8rem;
+  }
+}
