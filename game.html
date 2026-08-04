@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>育华中学公示网 | 晚自习留校名单</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="paywall.css">
+</head>
+<body>
+
+<!-- ========== 顶部公告栏 ========== -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <span class="top-bar-date" id="top-bar-date">2025年10月15日 星期三</span>
+    <div class="top-bar-notice">
+      <span class="notice-dot"></span>
+      <span>教务处公告：10月月考后晚自习留校名单已公示，请相关同学准时参加</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 粘性导航头 ========== -->
+<header class="site-header-bar" id="site-header-bar">
+  <div class="header-inner">
+    <div class="header-logo" onclick="showPage('page-home')">
+      <div class="logo-icon">
+        <img src="school-night.jpg" alt="校徽" class="logo-img">
+      </div>
+      <div class="logo-text">
+        <h1>育华中学公示网</h1>
+        <span>YUHUA HIGH SCHOOL · 校园信息发布平台</span>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a href="#" onclick="showPage('page-home');return false;" class="active" data-nav="page-home">首页</a>
+      <a href="#" onclick="showPage('page-ch1-main');return false;" data-nav="page-ch1-main">公示名单</a>
+      <a href="#" onclick="showPage('page-ch2-forum');return false;" data-nav="page-ch2-forum">留言板</a>
+      <a href="#" onclick="showPage('page-ch3-monitor');return false;" data-nav="page-ch3-monitor">监控台账</a>
+      <a href="#" onclick="showPage('page-ch4-social');return false;" data-nav="page-ch4-social">社交记录</a>
+      <a href="#" onclick="showPage('page-ch5-review');return false;" data-nav="page-ch5-review">调查复盘</a>
+    </nav>
+    <div class="header-actions">
+      <div class="header-search">
+        <input type="text" placeholder="搜索校园信息..." id="header-search-input">
+      </div>
+      <div class="header-progress" id="header-progress" style="display:none;">
+        <span class="progress-chapter" id="chapter-indicator">序章</span>
+      </div>
+      <a href="#" class="notepad-link" onclick="toggleNotepad();return false;" title="打开便笺">&lt;便笺&gt;</a>
+      <button class="header-btn" onclick="AudioSys.toggle()" title="音效开关" id="audio-toggle"><img src="icon-audio.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+      <button class="header-btn" id="hint-btn" onclick="onHintButtonClick()" title="获取提示（点击3次获得完整提示，可随时回顾）"><img src="icon-bulb.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+      <button class="header-btn" onclick="saveGame()" title="手动存档"><img src="icon-save.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+      <button class="support-chip" onclick="showSupportPaywall()" title="支持作者">1元支持</button>
+    </div>
+  </div>
+</header>
+
+<!-- ========== 便签纸面板 ========== -->
+<div class="notepad-panel theme-yellow" id="notepad-panel">
+  <button class="notepad-hide-btn" onclick="toggleNotepad()" title="隐藏便笺">−</button>
+  <div class="notepad-header">
+    <h3>调查笔记</h3>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="notepad-theme-selector">
+        <div class="theme-dot active" style="background:#fef9e7;border-color:#e8d5a3;" onclick="changeNotepadTheme('theme-yellow')" title="经典黄"></div>
+        <div class="theme-dot" style="background:#e8f4fd;" onclick="changeNotepadTheme('theme-blue')" title="深海蓝"></div>
+        <div class="theme-dot" style="background:#fde8f0;" onclick="changeNotepadTheme('theme-pink')" title="樱花粉"></div>
+        <div class="theme-dot" style="background:#2a2d33;" onclick="changeNotepadTheme('theme-dark')" title="暗夜黑"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 便签纸工具栏 -->
+  <div class="notepad-toolbar">
+    <div class="toolbar-section">
+      <span class="toolbar-label">快速插入</span>
+      <div class="toolbar-btns">
+        <button class="toolbar-btn" onclick="insertTimestamp()" title="插入时间戳"><img src="icon-clock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+        <button class="toolbar-btn" onclick="insertNotepadTemplate('timeline')" title="时间线模板"><img src="icon-calendar.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+        <button class="toolbar-btn" onclick="insertNotepadTemplate('clues')" title="线索清单"><img src="icon-list.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+        <button class="toolbar-btn" onclick="insertNotepadTemplate('symbols')" title="符号线索"><img src="icon-crystal.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+        <button class="toolbar-btn" onclick="insertNotepadTemplate('evidence')" title="证据链"><img src="icon-link.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+        <button class="toolbar-btn" onclick="insertNotepadTemplate('suspects')" title="嫌疑人"><img src="icon-detective.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+      </div>
+    </div>
+    <div class="toolbar-section">
+      <span class="toolbar-label">操作</span>
+      <div class="toolbar-btns">
+        <button class="toolbar-btn" onclick="exportNotepad()" title="导出笔记"><img src="icon-save.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+        <button class="toolbar-btn danger" onclick="clearNotepad()" title="清空"><img src="icon-trash.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="notepad-body">
+    <textarea id="notepad-text" placeholder="在这里记录你的推理和发现..."></textarea>
+  </div>
+  <div class="notepad-footer">
+    <span>自动保存中...</span>
+    <span id="notepad-wordcount">0 字</span>
+  </div>
+</div>
+
+<!-- ========== 便笺悬浮按钮 ========== -->
+<button class="notepad-toggle" id="notepad-toggle" onclick="toggleNotepad()" title="打开便笺">📝</button>
+
+<!-- ========== 提示气泡 ========== -->
+<div class="hint-bubble" id="hint-bubble"></div>
+
+<!-- ========== 提示面板（可反复查看已解锁的各级提示） ========== -->
+<div class="hint-panel" id="hint-panel">
+  <div class="hint-panel-header">
+    <span class="hint-panel-title"><img src="icon-bulb.svg" class="icon-img inline-icon" alt="" style="width:18px;height:18px;vertical-align:middle;"> 调查提示</span>
+    <button class="hint-panel-close" onclick="toggleHintPanel(false)" title="关闭">&times;</button>
+  </div>
+  <div class="hint-panel-body" id="hint-panel-body">
+    <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px 0;">点击下方按钮获取提示。每章最多3级，越往后越详细。已获取的提示可随时在此回顾。</p>
+  </div>
+  <div class="hint-panel-footer">
+    <button class="btn btn-primary hint-next-btn" id="hint-next-btn" onclick="getHint(currentChapterHint)">获取下一级提示</button>
+  </div>
+</div>
+<div class="hint-panel-overlay" id="hint-panel-overlay" onclick="toggleHintPanel(false)"></div>
+
+<!-- ========== 章节过渡动画 ========== -->
+<div class="chapter-trans" id="chapter-transition">
+  <div class="ch-num">CHAPTER 01</div>
+  <div class="ch-title">异常公示</div>
+  <div class="ch-sub">一切看起来都很正常，除了那些被精心掩盖的细节。</div>
+  <div class="ch-tap">点击继续</div>
+</div>
+
+<!-- ========== 模态框容器 ========== -->
+<div class="modal-overlay" id="modal-generic" onclick="if(event.target===this)closeModal('modal-generic')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="modal-title">标题</h2>
+      <button class="modal-close" onclick="closeModal('modal-generic')">×</button>
+    </div>
+    <div class="modal-body" id="modal-body">内容</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 页面内容开始 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 首页/Hero区 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="page active" id="page-home">
+  <!-- Hero 幻灯片 -->
+  <div class="hero-section">
+    <div class="hero-slide active" id="hero-slide-1">
+      <div class="hero-bg" style="background:url('school-night.jpg') center/cover no-repeat;"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h2>育华中学 · 高三（7）班</h2>
+        <p>2025年10月月考后晚自习留校名单已公示</p>
+        <button class="hero-btn" onclick="startGame()">开始调查</button>
+      </div>
+    </div>
+    <div class="hero-slide" id="hero-slide-2">
+      <div class="hero-bg" style="background:url('classroom-night.jpg') center/cover no-repeat;"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h2>空荡的教室</h2>
+        <p>那个夜晚，教室里发生了什么？</p>
+      </div>
+    </div>
+    <div class="hero-slide" id="hero-slide-3">
+      <div class="hero-bg" style="background:url('corridor-dark.jpg') center/cover no-repeat;"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h2>深夜走廊</h2>
+        <p>每一份记录背后，都藏着不为人知的秘密</p>
+      </div>
+    </div>
+    <div class="hero-dots">
+      <div class="hero-dot active" onclick="switchHeroSlide(0)"></div>
+      <div class="hero-dot" onclick="switchHeroSlide(1)"></div>
+      <div class="hero-dot" onclick="switchHeroSlide(2)"></div>
+    </div>
+  </div>
+
+  <!-- 快捷入口 -->
+  <div class="quick-cards">
+    <div class="quick-card" onclick="showPage('page-ch1-main')">
+      <div class="quick-card-icon" style="background:#e8f4f8;color:#3a5a7c;">
+        <img src="card-roster.jpg" alt="公示" class="quick-card-img">
+      </div>
+      <h3>公示名单</h3>
+      <p>查看官方留校名单与存档记录</p>
+    </div>
+    <div class="quick-card" onclick="showPage('page-ch2-forum')">
+      <div class="quick-card-icon" style="background:#fdf2f0;color:#a05050;">
+        <img src="card-forum.jpg" alt="留言" class="quick-card-img">
+      </div>
+      <h3>班级留言板</h3>
+      <p>同学证词与匿名讨论记录</p>
+    </div>
+    <div class="quick-card" onclick="showPage('page-ch3-monitor')">
+      <div class="quick-card-icon" style="background:#f0f7f0;color:#4a7c59;">
+        <img src="card-monitor.jpg" alt="监控" class="quick-card-img">
+      </div>
+      <h3>监控台账</h3>
+      <p>监控回放、签到记录与天气数据</p>
+    </div>
+  </div>
+
+  <!-- 公告栏 -->
+  <div class="notice-board-home">
+    <h3>校园公告</h3>
+    <div class="notice-item-home" onclick="showPage('page-ch1-main')">
+      <span class="notice-title">2025年10月月考后晚自习留校名单公示</span>
+      <span class="tag-new">NEW</span>
+      <span class="notice-date">10-15</span>
+    </div>
+    <div class="notice-item-home" onclick="showPage('page-ch1-archive')">
+      <span class="notice-title">关于留校名单存档记录的查询说明</span>
+      <span class="notice-date">10-15</span>
+    </div>
+    <div class="notice-item-home special" onclick="showPage('page-ch1-main')">
+      <span class="notice-title">系统维护通知：公示系统于10月16日凌晨进行数据维护</span>
+      <span class="notice-date">10-16</span>
+    </div>
+    <div class="notice-item-home" onclick="showPage('page-ch2-forum')">
+      <span class="notice-title">班级内网留言板开放，请同学们文明交流</span>
+      <span class="notice-date">10-14</span>
+    </div>
+  </div>
+
+  <!-- 关于 -->
+  <div class="about-section">
+    <div class="about-text">
+      <h3>关于本档案</h3>
+      <p>你是一名新晋转学生。今晚，你独自坐在空荡荡的教室里，无意间发现了学校公示系统中一些不该存在的记录。</p>
+      <p>那些看似完整的名单、证词、监控记录，似乎都在刻意隐瞒着什么。真相，藏在碎片化信息的缝隙中。</p>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-top:1rem;">本网站纯属虚构，仅供娱乐解谜。请通过探索页面、发现线索、破解谜题来推进调查。</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-item">
+        <div class="stat-number">5</div>
+        <div class="stat-label">调查章节</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">?</div>
+        <div class="stat-label">隐藏线索</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">?</div>
+        <div class="stat-label">可能结局</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:2rem 0;">
+    <button class="btn btn-primary" onclick="startGame()" style="font-size:1rem;padding:12px 36px;">开始调查</button>
+    <button class="btn btn-ghost" onclick="resetGame()" style="margin-left:12px;">重置进度</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 第一章：异常公示网页 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- 育华中学官方公示网（主页） -->
+<div class="page" id="page-ch1-main">
+  <div class="school-site">
+    <div class="site-header">
+      <h1><img src="icon-school.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 育华中学官方公示网</h1>
+      <div class="sub">育华中学教务处 · 校园信息发布平台</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" class="active" onclick="showPage('page-ch1-main');return false;">首页公示</a>
+      <a href="#" onclick="showPage('page-ch1-archive');return false;">班级留校名单存档</a>
+      <a href="#" class="locked" data-target="page-ch1-history" onclick="showPage('page-ch1-history');return false;">历史存档溯源</a>
+      <a href="#" onclick="goToChapter(2);return false;">下一章 →</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner">
+        <strong><img src="icon-megaphone.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 公告</strong> 2025年10月月考后晚自习安排已公布，请各班级严格遵守留校名单安排。
+      </div>
+
+      <div class="card">
+        <div class="card-title">2025年10月月考后晚自习留校名单</div>
+        <div class="card-subtitle">公示日期：2025-10-15 | 有效期限：2025-10-15 至 2025-10-31</div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;">
+          以下名单为高三（7）班10月15日月考后晚自习留校学生名单。请相关学生准时参加，不得无故缺席。
+        </p>
+        <table class="data-table" id="ch1-roster-table">
+          <thead>
+            <tr><th>序号</th><th>姓名</th><th>学号</th><th>留校原因</th><th>签到状态</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>王明</td><td>20220301</td><td>数学补考</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>2</td><td>李婷</td><td>20220305</td><td>英语听写</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>3</td><td>张浩</td><td>20220308</td><td>物理实验</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>4</td><td>刘洋</td><td>20220312</td><td>化学补习</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>5</td><td>陈雪</td><td>20220315</td><td>语文默写</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>6</td><td>赵伟</td><td>20220318</td><td>生物实验</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>7</td><td>孙丽</td><td>20220322</td><td>地理补习</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>8</td><td>周杰</td><td>20220325</td><td>历史补考</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr><td>9</td><td>吴敏</td><td>20220328</td><td>政治听写</td><td><span style="color:var(--success);font-weight:600;">✓</span> 已签到</td></tr>
+            <tr class="anomaly"><td>10</td><td class="erased" data-clue="ch1-name" onclick="findClue('ch1-name','被抹去的名字','公示名单第10行的人名被刻意擦除，只留下了学号：20220333','real')">[已删除]</td><td>20220333</td><td>自习</td><td class="date-anomaly">? 未记录</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:12px;">
+          注：名单共计 <strong>9人</strong> 实际留校，考勤记录完整。如有疑问请联系教务处张老师。
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-chart.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 本月留校统计</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px;">
+          <div style="text-align:center;padding:16px;background:#fafbfc;border-radius:8px;">
+            <div style="font-size:1.5rem;font-weight:700;color:var(--accent-blue);">9</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);">实际留校人数</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:#fafbfc;border-radius:8px;">
+            <div style="font-size:1.5rem;font-weight:700;color:var(--success);">100%</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);">签到完成率</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:#fafbfc;border-radius:8px;">
+            <div style="font-size:1.5rem;font-weight:700;color:var(--warning);">0</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);">异常记录</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--warning);">
+        <div class="card-title"><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 系统提示</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          公示系统于 <span class="date-anomaly">10月16日凌晨02:30</span> 进行了一次数据维护。维护期间部分历史记录可能被临时隐藏。<br>
+          如发现名单异常，请通过班级内网留言板反馈。
+        </p>
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">
+          [维护日志] 操作员：admin | 维护类型：数据归档 | 影响范围：高三（7）班 10月15日记录
+        </p>
+      </div>
+
+      <!-- 新增：误导性线索 -->
+      <div class="card" style="border-left:4px solid var(--success);opacity:0.9;">
+        <div class="card-title"><img src="icon-megaphone.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 教务处内部通知</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          关于10月15日高三（7）班留校名单的说明：<br><br>
+          经核实，名单上第10位学生<strong>林知夏</strong>因个人原因于当晚21:00前已提前离校，未参加完整晚自习。
+          根据考勤规定，未完整参加晚自习的学生不计入留校名单。<br><br>
+          该生家长已于10月16日上午致电学校确认此事。请各班级不要过度解读，避免引起不必要的恐慌。
+        </p>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch1-fake-notice','教务处内部通知','一份声称林知夏提前离校的内部通知。','fake')">[标记为可疑通知]</span>
+          <span style="cursor:pointer;color:var(--accent-blue);margin-left:12px;" onclick="findClue('ch1-contra-time','时间记录','通知称林知夏21:00前离校，但签到台账的签退时间为"?"。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <!-- 新增：剧情转折线索 -->
+      <div class="card" style="border-left:4px solid var(--accent-blue);background:linear-gradient(135deg,#f0f4f8,#e8eef4);">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 意外发现</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          在公示页面的缓存文件中，你发现了一条被删除的评论：<br><br>
+          <span style="font-style:italic;color:var(--text-muted);">"我是林知夏的同桌。她15号晚上确实在教室，我一直待到21:15才走，她还在那里。什么提前离校，完全是胡说！——某同学"</span><br><br>
+          这条评论在发布后10分钟内被删除，删除IP地址与教务处服务器不一致。
+        </p>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--success);" onclick="findClue('ch1-witness','被删除的评论','一条被删除的评论，来自林知夏的同桌，称她当晚确实在教室。','real')">[记录证词]</span>
+        </div>
+      </div>
+
+      <!-- 隐藏线索：页面底部的小字 -->
+      <div style="margin-top:30px;padding:16px;background:#f5f6f8;border-radius:8px;font-size:0.78rem;color:#999;line-height:1.8;">
+        <strong>页面元数据：</strong><br>
+        生成时间：2025-10-15 18:00:00 | 最后修改：2025-10-16 02:35:17<br>
+        修改次数：<span class="tamper-mark">3次</span> | 原始版本：<span class="hidden-text" data-text="v1.0">v1.3</span><br>
+        审核状态：已通过 | 发布人：<span class="tamper-mark">教务处系统</span>
+        <div style="margin-top:8px;color:#bbb;font-size:0.7rem;">
+          [调试信息] page_source=roster_v2 | backup_id=20251015_001 | <span style="cursor:pointer;" onclick="findClue('ch1-backup','备份记录','公示页面源码中隐藏着备份ID：20251015_001，原始版本号为v1.0，但当前显示v1.3','real')">trace_log=enabled</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 班级留校名单存档页（子页面） -->
+<div class="page" id="page-ch1-archive">
+  <div class="school-site">
+    <div class="site-header">
+      <h1><img src="icon-folder.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 班级留校名单存档页</h1>
+      <div class="sub">高三（7）班 · 班级内网 · 历史记录查询</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch1-main');return false;">← 返回公示首页</a>
+      <a href="#" class="active" onclick="showPage('page-ch1-archive');return false;">班级存档</a>
+      <a href="#" class="locked" data-target="page-ch1-history" onclick="showPage('page-ch1-history');return false;">历史存档溯源</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">存档记录查询</div>
+        <div class="search-box">
+          <input type="text" placeholder="输入日期查询（如：2025-10-15）" id="archive-search-input" value="2025-10-15">
+          <button class="btn btn-primary" onclick="searchArchive()"><img src="icon-search.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 查询</button>
+        </div>
+      </div>
+
+      <div class="card" id="archive-result">
+        <div class="card-title">查询结果：2025-10-15 留校记录</div>
+        <div class="card-subtitle">存档编号：C7-20251015 | 存档人：班长 | 存档时间：2025-10-15 22:15</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>序号</th><th>姓名</th><th>学号</th><th>留校原因</th><th>签到时间</th><th>离校时间</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>王明</td><td>20220301</td><td>数学补考</td><td>18:05</td><td>21:30</td></tr>
+            <tr><td>2</td><td>李婷</td><td>20220305</td><td>英语听写</td><td>18:02</td><td>21:15</td></tr>
+            <tr><td>3</td><td>张浩</td><td>20220308</td><td>物理实验</td><td>18:08</td><td>21:45</td></tr>
+            <tr><td>4</td><td>刘洋</td><td>20220312</td><td>化学补习</td><td>18:00</td><td>21:20</td></tr>
+            <tr><td>5</td><td>陈雪</td><td>20220315</td><td>语文默写</td><td>18:03</td><td>21:10</td></tr>
+            <tr><td>6</td><td>赵伟</td><td>20220318</td><td>生物实验</td><td>18:06</td><td>21:35</td></tr>
+            <tr><td>7</td><td>孙丽</td><td>20220322</td><td>地理补习</td><td>18:01</td><td>21:25</td></tr>
+            <tr><td>8</td><td>周杰</td><td>20220325</td><td>历史补考</td><td>18:04</td><td>21:40</td></tr>
+            <tr><td>9</td><td>吴敏</td><td>20220328</td><td>政治听写</td><td>18:07</td><td>21:50</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:12px;">
+          本存档由班长于晚自习结束后整理提交，共计 <strong>9人</strong> 完成留校自习并按时离校。
+        </p>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,#fafbfc,#f0f2f5);">
+        <div class="card-title"><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 存档备注</div>
+        <div class="memo-paper">
+          <div class="memo-text">
+            10月15日晚自习情况正常，所有留校学生均按时签到、按时离校。<br>
+            无异常情况报告。<br><br>
+            <span style="color:#999;font-size:0.8rem;">——班长 10月15日 22:15</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:#fff;border-radius:6px;font-size:0.8rem;color:var(--text-muted);">
+          <strong>系统批注：</strong>本存档已通过教务处审核，与公示网数据一致。
+          <span style="cursor:pointer;color:var(--accent-blue);" onclick="findClue('ch1-consistent','数据一致性','公示网和班级存档都显示9人留校，且数据完全一致。','half')">[查看审核日志]</span>
+        </div>
+      </div>
+
+      <!-- 隐藏的符号线索 -->
+      <div class="card" style="border:2px dashed var(--border);background:#fafbfc;">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 页面底部发现</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">
+          在存档页面的角落，你发现了一些奇怪的涂鸦痕迹：
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;padding:16px;background:#fff;border-radius:8px;">
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-1','符号线索：木','存档页边缘画着一棵树。旁边有模糊的字迹。','real')" title="点击调查"><img src="icon-sym-tree.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+          <div style="font-size:2rem;opacity:0.3;">?</div>
+          <div style="font-size:2rem;opacity:0.3;">?</div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;text-align:center;">
+          这些符号似乎有什么含义...（需要更多线索才能解读）
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 历史存档溯源页面（解锁后） -->
+<div class="page" id="page-ch1-history">
+  <div class="school-site page-corrupted">
+    <div class="site-header" style="background:linear-gradient(135deg,#4a3a3a,#5a4a4a);">
+      <h1 class="glitch" data-text="历史存档溯源">历史存档溯源</h1>
+      <div class="sub"><img src="icon-warning.svg" class="icon-img inline-icon" alt="" aria-hidden="true"> 部分记录被替换遮盖</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch1-main');return false;">公示首页</a>
+      <a href="#" onclick="showPage('page-ch1-archive');return false;">班级存档</a>
+      <a href="#" class="active" onclick="showPage('page-ch1-history');return false;">历史溯源</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner danger">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 警告</strong> 您正在访问被系统标记为"已归档"的历史记录。以下数据可能包含已删除或已被替换的内容。
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color:var(--danger);"><img src="icon-scroll.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 原始版本 v1.0（已删除）</div>
+        <div class="card-subtitle">备份ID：20251015_001 | 创建时间：2025-10-15 18:00 | <span class="tamper-mark">删除时间：2025-10-16 02:33</span></div>
+        <table class="data-table">
+          <thead>
+            <tr><th>序号</th><th>姓名</th><th>学号</th><th>留校原因</th><th>状态</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>王明</td><td>20220301</td><td>数学补考</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>2</td><td>李婷</td><td>20220305</td><td>英语听写</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>3</td><td>张浩</td><td>20220308</td><td>物理实验</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>4</td><td>刘洋</td><td>20220312</td><td>化学补习</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>5</td><td>陈雪</td><td>20220315</td><td>语文默写</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>6</td><td>赵伟</td><td>20220318</td><td>生物实验</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>7</td><td>孙丽</td><td>20220322</td><td>地理补习</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>8</td><td>周杰</td><td>20220325</td><td>历史补考</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr><td>9</td><td>吴敏</td><td>20220328</td><td>政治听写</td><td><span style="color:var(--success);">✓</span></td></tr>
+            <tr style="background:rgba(160,80,80,0.08);"><td>10</td><td><strong style="color:var(--danger);">林知夏</strong></td><td>20220333</td><td>自习</td><td class="date-anomaly">? 未离校</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:16px;padding:12px;background:rgba(160,80,80,0.05);border-radius:6px;border-left:3px solid var(--danger);">
+          <p style="font-size:0.85rem;color:var(--danger);">
+            <strong>原始记录备注：</strong>林知夏同学于21:30后仍未离校，值班老师巡查时未找到该生。22:00再次确认时，该生座位已空，但未签退。
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="border:2px solid var(--warning);">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 篡改痕迹分析</div>
+        <div style="font-size:0.85rem;color:var(--text-secondary);line-height:2;">
+          <p>• 原始版本包含 <strong>10人</strong>，当前版本仅显示 <strong>9人</strong></p>
+          <p>• 第10条记录（林知夏，学号20220333）在 v1.3 中被标记为"已删除"</p>
+          <p>• 修改时间：2025-10-16 02:33，操作者IP：<span class="tamper-mark">内网-班长终端</span></p>
+          <p>• 修改说明：<span class="strikethrough-fake">数据纠错：删除异常记录</span></p>
+          <p>• 原始备注被替换为：<span class="strikethrough-fake">"无异常情况"</span></p>
+        </div>
+      </div>
+
+      <!-- 第一章符号谜题：被抹去的名字 -->
+      <div class="card" id="symbol-puzzle-ch1" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-crystal.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 符号解谜：被抹去的名字</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;">
+          你发现了一些奇怪的符号组合。通过之前找到的线索，你知道每个符号代表一个拼音音节。组合起来，就是被抹去的那个人名。
+        </p>
+        <div class="symbol-panel" style="margin:0;background:transparent;">
+          <div class="symbol-row" id="ch1-symbol-row">
+            <div class="symbol-item locked" data-symbol="sym-tree" onclick="onSymbolClick('sym-tree')"><img src="icon-sym-tree.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item locked" data-symbol="sym-water" onclick="onSymbolClick('sym-water')"><img src="icon-sym-water.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item locked" data-symbol="sym-moon" onclick="onSymbolClick('sym-moon')"><img src="icon-sym-moon.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+          </div>
+          <div style="text-align:center;margin:12px 0;font-size:0.8rem;opacity:0.6;">
+            点击符号查看已解锁的线索。需要先找到对应的符号线索才能破解。
+          </div>
+          <div style="margin-top:20px;padding:16px;background:rgba(0,0,0,0.2);border-radius:8px;">
+            <div style="font-size:0.8rem;margin-bottom:8px;">输入解谜答案（拼音，小写）：</div>
+            <div class="puzzle-input-group" style="justify-content:center;">
+              <input type="text" class="puzzle-input" id="ch1-puzzle-answer" placeholder="输入拼音..." style="background:rgba(0,0,0,0.2);color:#fff;border-color:rgba(192,200,208,0.3);">
+              <button class="btn btn-primary" onclick="checkChapter1Puzzle()"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button class="btn btn-primary" onclick="goToChapter(2)">→ 进入第二章：多页证词博弈</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 第二章：多页证词博弈 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- 班级内网留言板 -->
+<div class="page" id="page-ch2-forum">
+  <div class="school-site">
+    <div class="site-header">
+      <h1><img src="icon-chat.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 班级内网留言板</h1>
+      <div class="sub">高三（7）班 · 匿名交流平台 · 仅限本班访问</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" class="active" onclick="showPage('page-ch2-forum');return false;">留言板</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-a');return false;">证词：王明</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-b');return false;">证词：李婷</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-c');return false;">证词：班长</a>
+      <a href="#" class="locked" data-target="page-ch2-private" onclick="showPage('page-ch2-private');return false;">私密存档</a>
+      <a href="#" onclick="goToChapter(3);return false;">下一章 →</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner">
+        <strong><img src="icon-pin.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 版规</strong> 本留言板仅供学习交流，禁止发布不实信息。所有发言将被记录。
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-calendar.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 2025年10月15日 晚自习讨论</div>
+        
+        <div class="forum-post" data-clue="ch2-flood1" onclick="findClue('ch2-flood1','留言：奶茶','有人发了一条无关留言','useless')">
+          <div class="author">@匿名同学A</div>
+          <div class="time">10-15 18:23</div>
+          <div class="content">今晚晚自习有人一起点奶茶吗？我饿了...</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-real1" onclick="findClue('ch2-real1','留言：后排的女生','有人提到看到有个女生还坐在教室后排','real')">
+          <div class="author">@匿名同学B</div>
+          <div class="time">10-15 19:45</div>
+          <div class="content">刚才去洗手间路过7班教室，看到有个女生还坐在后排靠窗的位置，好像在写什么。这么晚了还不走吗？</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-fake1" onclick="findClue('ch2-fake1','留言：全员已走','有人声称21:30前教室已无人','fake')">
+          <div class="author">@匿名同学C</div>
+          <div class="time">10-15 21:35</div>
+          <div class="content">刚查完房，7班教室已经没人了。今天留校的都走得挺早的，21:30之前就全走光了。锁门师傅都确认过了。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-flood2" onclick="findClue('ch2-flood2','留言：月考','关于考试的抱怨','useless')">
+          <div class="author">@匿名同学D</div>
+          <div class="time">10-15 22:01</div>
+          <div class="content">这次月考数学最后一题太难了，有人做出来吗？求讲解！</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-half1" onclick="findClue('ch2-half1','留言：班长整理名单','班长提交了名单整理结果','half')">
+          <div class="author">@班长</div>
+          <div class="time">10-15 22:15</div>
+          <div class="content">今天的留校名单已整理完毕并提交教务处。所有人按时签到、按时离校。无异常。[已归档]</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-fake2" onclick="findClue('ch2-fake2','留言：没有第10人','有人坚称名单只有9人','fake')">
+          <div class="author">@匿名同学E</div>
+          <div class="time">10-16 08:30</div>
+          <div class="content">看到有人在问昨天留校的事，我就在7班，名单上确实只有9个人啊。哪有什么第10个人？别造谣了。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-real2" onclick="findClue('ch2-real2','留言：值班巡查','值班老师提到21:30后巡查时还有人','real')">
+          <div class="author">@匿名同学F</div>
+          <div class="time">10-16 09:12</div>
+          <div class="content">我昨晚值班，21:30巡查的时候7班确实还有人。不过22:00再去看的时候已经没人了。没什么异常的，可能就是走得晚吧。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch2-flood3" onclick="findClue('ch2-flood3','留言：麻辣烫','关于食堂的讨论','useless')">
+          <div class="author">@匿名同学G</div>
+          <div class="time">10-16 12:05</div>
+          <div class="content">食堂二楼的麻辣烫今天换配方了，感觉没以前好吃了。</div>
+        </div>
+      </div>
+
+      <div class="card" style="border:2px dashed var(--border);background:#fafbfc;">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 页面角落的发现</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">
+          在留言板的源代码注释中，你发现了一些奇怪的符号：
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;padding:16px;background:#fff;border-radius:8px;">
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-2','符号线索：水','留言板源码注释中画着水滴的图案。旁边有些字迹。','real')" title="点击调查"><img src="icon-sym-water.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- 增强：论坛用户搜索解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#f0f4f8,#e8eef4);">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 用户发帖记录查询</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;line-height:1.8;">
+          班级留言板支持按用户ID查询历史发帖。你注意到某些同学的关键帖子被隐藏了...
+        </p>
+        <div class="search-box">
+          <input type="text" placeholder="输入用户ID..." id="forum-user-search" style="background:#fff;">
+          <button class="btn btn-primary" onclick="searchForumUser()"><img src="icon-search.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 查询</button>
+        </div>
+        <div id="forum-search-result" style="display:none;margin-top:16px;"></div>
+        <div id="forum-search-hint" style="display:none;margin-top:12px;padding:10px;background:rgba(201,162,39,0.05);border-radius:6px;font-size:0.8rem;color:var(--text-secondary);">
+          <strong>查询失败：</strong>未找到该用户。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 证词页面A：王明 -->
+<div class="page" id="page-ch2-testimony-a">
+  <div class="school-site">
+    <div class="site-header">
+      <h1><img src="icon-memo.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 个人证词存档</h1>
+      <div class="sub">高三（7）班 · 王明 · 学号：20220301</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch2-forum');return false;">← 留言板</a>
+      <a href="#" class="active" onclick="showPage('page-ch2-testimony-a');return false;">王明</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-b');return false;">李婷</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-c');return false;">班长</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">证人陈述记录</div>
+        <div class="card-subtitle">记录时间：2025-10-16 10:00 | 记录人：教务处</div>
+        <div class="memo-paper">
+          <div class="memo-text">
+            我叫王明，学号20220301。10月15日晚上我留在学校补考数学。<br><br>
+            我大概18:00到教室，21:30左右考完离开。期间我没有注意到有什么异常。<br><br>
+            教室里还有其他同学，但我不记得具体有谁了。我走的时候教室里还有几个人，但我没注意。<br><br>
+            <span class="evidence-highlight">我大概21:20就收拾东西走了，可能记错时间了。</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:#fff;border-radius:6px;font-size:0.8rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--accent-blue);" onclick="findClue('ch2-contra-a','王明的证词','王明自称21:20离开，但存档记录显示离校时间为21:30。','real')">[记录疑点]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 证词页面B：李婷 -->
+<div class="page" id="page-ch2-testimony-b">
+  <div class="school-site">
+    <div class="site-header">
+      <h1><img src="icon-memo.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 个人证词存档</h1>
+      <div class="sub">高三（7）班 · 李婷 · 学号：20220305</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch2-forum');return false;">← 留言板</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-a');return false;">王明</a>
+      <a href="#" class="active" onclick="showPage('page-ch2-testimony-b');return false;">李婷</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-c');return false;">班长</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">证人陈述记录</div>
+        <div class="card-subtitle">记录时间：2025-10-16 10:30 | 记录人：教务处</div>
+        <div class="memo-paper">
+          <div class="memo-text">
+            我叫李婷，学号20220305。10月15日晚上我参加英语听写补测。<br><br>
+            我18:00左右到教室，21:15左右离开。走的时候我看到<span class="tamper-mark">教室里还有三四个同学</span>。<br><br>
+            <span class="evidence-highlight">我记得后排靠窗的位置有个女生还在写东西，但当时没看清是谁。</span><br><br>
+            我走的时候是跟陈雪一起走的，我们可以互相作证。
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:#fff;border-radius:6px;font-size:0.8rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--accent-blue);" onclick="findClue('ch2-contra-b','李婷的证词','李婷提到21:15离开时，后排靠窗仍有女生在写东西。','real')">[记录疑点]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 证词页面C：班长 -->
+<div class="page" id="page-ch2-testimony-c">
+  <div class="school-site">
+    <div class="site-header">
+      <h1><img src="icon-memo.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 个人证词存档</h1>
+      <div class="sub">高三（7）班 · 班长 · 学号：20220310</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch2-forum');return false;">← 留言板</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-a');return false;">王明</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-b');return false;">李婷</a>
+      <a href="#" class="active" onclick="showPage('page-ch2-testimony-c');return false;">班长</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">证人陈述记录</div>
+        <div class="card-subtitle">记录时间：2025-10-16 09:00 | 记录人：教务处</div>
+        <div class="memo-paper">
+          <div class="memo-text">
+            我是班长，学号20220310。作为班级负责人，我负责整理每天的留校名单并提交教务处。<br><br>
+            10月15日的留校名单我已经仔细核对过了，<span class="strikethrough-fake">共计10人</span> <strong>共计9人</strong> 留校，所有人都按时签到、按时离校。<br><br>
+            我21:45左右离开教室，走的时候做了最后的检查，<span class="evidence-highlight">确认教室里已经没有人了</span>。<br><br>
+            名单和签到记录都已经提交教务处审核，数据没有问题。
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(201,162,39,0.05);border-radius:6px;border-left:3px solid var(--warning);font-size:0.8rem;color:var(--text-secondary);">
+          <span style="cursor:pointer;color:var(--accent-blue);display:block;" onclick="findClue('ch2-contra-c','班长的证词','班长称21:45离开并确认无人，但名单提交时间为22:15，且证词中人数有涂改痕迹。','fake')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <!-- 第二章符号谜题 -->
+      <div class="card" style="border:2px dashed var(--border);background:#fafbfc;">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 班长课桌里的发现</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">
+          在班长课桌的抽屉深处，你发现了一张折叠的纸条，上面画着符号：
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;padding:16px;background:#fff;border-radius:8px;">
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-3','符号线索：月','纸条背面画着月亮。旁边有一些字迹。','real')" title="点击调查"><img src="icon-sym-moon.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- 新增：剧情反转 - 班长的另一面 -->
+      <div class="card" style="border-left:4px solid var(--danger);background:linear-gradient(135deg,#fff5f5,#fff0f0);">
+        <div class="card-title"><img src="icon-theater.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 意外发现：班长的另一份记录</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          在班长课桌的夹层中，你发现了一份未完成的检讨书草稿：<br><br>
+          <span style="font-style:italic;color:var(--text-muted);">
+            "我错了。我不该为了评优资格而...（此处涂改严重）...<br>
+            但我不这么做的话，全班都会被拖累。她已经那么孤僻了，多一天少一天有什么关系？<br>
+            况且，这不是我一个人的决定。是大家一起...（后续被撕掉）"
+          </span>
+        </p>
+        <div style="margin-top:12px;padding:10px;background:rgba(160,80,80,0.05);border-radius:6px;font-size:0.8rem;color:var(--text-secondary);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch2-draft','未完成的检讨书','班长课桌夹层中发现的检讨书草稿，内容提到"这不是我一个人的决定"。','real')">[记录疑点]</span>
+          <span style="cursor:pointer;color:var(--warning);margin-left:12px;" onclick="findClue('ch2-draft-fake','涂改的痕迹','检讨书有涂改痕迹。','half')">[存疑]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 私密聊天记录存档页（解锁后） -->
+<div class="page" id="page-ch2-private">
+  <div class="school-site page-corrupted">
+    <div class="site-header" style="background:linear-gradient(135deg,#4a3a3a,#5a4a4a);">
+      <h1 class="glitch" data-text="私密聊天记录存档">私密聊天记录存档</h1>
+      <div class="sub"><img src="icon-warning.svg" class="icon-img inline-icon" alt="" aria-hidden="true"> 本页面为系统自动备份，非公开内容</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch2-forum');return false;">留言板</a>
+      <a href="#" onclick="showPage('page-ch2-testimony-a');return false;">证词</a>
+      <a href="#" class="active" onclick="showPage('page-ch2-private');return false;">私密记录</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner danger">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 机密</strong> 以下内容为学生私密聊天记录的系统备份，请勿外传。
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-chat.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 聊天截图存档 #1</div>
+        <div class="card-subtitle">参与人：王明、张浩、赵伟 | 时间：10-15 21:40</div>
+        <div class="chat-record">
+          <div class="chat-msg">
+            <div class="chat-avatar">王</div>
+            <div class="chat-bubble">你们走了吗？我还在教室，刚才看到班长在走廊打电话。</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">张</div>
+            <div class="chat-bubble">我早就走了。听说<span class="tamper-mark">林知夏</span>还在教室？</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">赵</div>
+            <div class="chat-bubble">别管她了，反正她又不在名单上。</div>
+          </div>
+          <div class="chat-msg self">
+            <div class="chat-avatar">王</div>
+            <div class="chat-bubble" style="background:var(--danger);">什么意思？她不是也留校了吗？</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">赵</div>
+            <div class="chat-bubble">班长说不用管，名单上没她。你也别多问了。</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch2-chat1','聊天记录#1','王明、张浩、赵伟的聊天记录，提到"名单上没她"。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-chat.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 聊天截图存档 #2</div>
+        <div class="card-subtitle">参与人：班长、陈雪 | 时间：10-16 00:15</div>
+        <div class="chat-record">
+          <div class="chat-msg self">
+            <div class="chat-avatar">班</div>
+            <div class="chat-bubble" style="background:var(--danger);">名单我已经改好了，你那边监控记录处理了吗？</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">陈</div>
+            <div class="chat-bubble">我在处理了，但是签到台账那边不太好改...</div>
+          </div>
+          <div class="chat-msg self">
+            <div class="chat-avatar">班</div>
+            <div class="chat-bubble" style="background:var(--danger);">不管用什么方法，必须确保所有记录一致。明天教务处要查。</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">陈</div>
+            <div class="chat-bubble">知道了。但是这样做真的好吗？万一被发现...</div>
+          </div>
+          <div class="chat-msg self">
+            <div class="chat-avatar">班</div>
+            <div class="chat-bubble" style="background:var(--danger);">只要口径统一，没人会注意。记住，名单上只有9个人。</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch2-chat2','聊天记录#2','班长和陈雪的聊天记录，提到"口径统一"和"名单上只有9个人"。','real')">[记录疑点]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 第三章：跨页监控溯源 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- 校园监控官网后台 -->
+<div class="page" id="page-ch3-monitor">
+  <div class="school-site">
+    <div class="site-header" style="background:linear-gradient(135deg,#2a3a2a,#3a4a3a);">
+      <h1><img src="icon-film.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 校园监控官网后台</h1>
+      <div class="sub">育华中学安保部 · 监控系统 v3.2 · 授权访问</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" class="active" onclick="showPage('page-ch3-monitor');return false;">监控回放</a>
+      <a href="#" onclick="showPage('page-ch3-signin');return false;">签到台账</a>
+      <a href="#" onclick="showPage('page-ch3-weather');return false;">天气存档</a>
+      <a href="#" onclick="showPage('page-ch3-classroom');return false;">教室记录</a>
+      <a href="#" class="locked" data-target="page-ch3-backup" onclick="showPage('page-ch3-backup');return false;">备份台账</a>
+      <a href="#" class="locked" data-target="page-ch3-trace" onclick="showPage('page-ch3-trace');return false;">残缺监控</a>
+      <a href="#" onclick="goToChapter(4);return false;">下一章 →</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner warning">
+        <strong><img src="icon-sym-lock.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 授权状态</strong> 当前用户：admin（临时授权）| 访问时间：2025-10-20 23:15 | 授权将于30分钟后过期
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-video.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 7班教室监控回放</div>
+        <div class="card-subtitle">摄像头编号：CAM-07-01 | 日期：2025-10-15</div>
+        <div class="monitor-frame">
+          <div class="timestamp">2025-10-15 <span id="cam-time">21:30:00</span></div>
+          <div class="cam-label">CAM-07-01 教室主视角</div>
+          <div class="cam-view" id="cam-view">
+            <div class="no-signal">
+              <div><img src="icon-video.svg" class="icon-img inline-icon" alt="" aria-hidden="true"> 监控画面模拟</div>
+              <div style="font-size:0.75rem;margin-top:8px;color:#666;">拖动下方时间轴查看不同时间段</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-size:0.8rem;margin-bottom:8px;">时间轴：</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn" onclick="setCamTime('18:00','教室内有约10名学生，正常自习。')">18:00</button>
+            <button class="btn" onclick="setCamTime('19:30','大部分学生在学习，后排靠窗有一名女生独自坐着。')">19:30</button>
+            <button class="btn" onclick="setCamTime('21:00','部分学生开始收拾东西准备离开。')">21:00</button>
+            <button class="btn" onclick="setCamTime('21:30','画面中仍有学生未离开，但<span class=\'tamper-mark\'>画面出现闪烁</span>。')">21:30</button>
+            <button class="btn btn-danger" onclick="setCamTime('21:45','<span class=\'date-anomaly\'>该时段录像丢失</span>：显示"信号中断-维护中"')">21:45 <img src="icon-warning.svg" class="icon-img btn-icon" alt="" aria-hidden="true"></button>
+            <button class="btn" onclick="setCamTime('22:00','教室已空，灯已关闭。')">22:00</button>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(201,162,39,0.05);border-radius:6px;font-size:0.8rem;color:var(--text-secondary);">
+          <strong>异常检测：</strong>21:45-21:50时段录像标记为"信号中断"，但维护日志显示当日无维护计划。
+          <span style="cursor:pointer;color:var(--accent-blue);" onclick="findClue('ch3-monitor-gap','监控缺失：21:45','21:45-21:50的监控录像被人为删除或屏蔽。维护日志证实当日无维护计划。','real')">[标记异常]</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 走廊监控快照</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+          <div class="monitor-frame" style="padding:10px;">
+            <div class="timestamp">21:15</div>
+            <div class="cam-label">走廊-CAM-07-H1</div>
+            <div class="cam-view" style="height:120px;">
+              <div class="no-signal" style="font-size:0.75rem;">画面显示多名学生离开教室</div>
+            </div>
+          </div>
+          <div class="monitor-frame" style="padding:10px;">
+            <div class="timestamp">21:35</div>
+            <div class="cam-label">走廊-CAM-07-H1</div>
+            <div class="cam-view" style="height:120px;">
+              <div class="no-signal" style="font-size:0.75rem;"><span class="tamper-mark">画面模糊，无法辨认</span></div>
+            </div>
+          </div>
+          <div class="monitor-frame" style="padding:10px;">
+            <div class="timestamp">21:50</div>
+            <div class="cam-label">走廊-CAM-07-H2</div>
+            <div class="cam-view" style="height:120px;">
+              <div class="no-signal" style="font-size:0.75rem;">画面显示班长从教室方向走来</div>
+            </div>
+          </div>
+          <div class="monitor-frame" style="padding:10px;">
+            <div class="timestamp" style="color:var(--danger);">22:05</div>
+            <div class="cam-label">走廊-CAM-07-H2</div>
+            <div class="cam-view" style="height:120px;">
+              <div class="no-signal" style="font-size:0.75rem;"><span class="date-anomaly">录像不存在</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新增：监控室的意外发现 -->
+      <div class="card" style="border-left:4px solid var(--accent-blue);background:linear-gradient(135deg,#f0f4f8,#e8eef4);">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 监控室值班日志</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          在监控室的废纸篓里，你发现了一张被揉皱的值班记录：<br><br>
+          <span style="font-style:italic;color:var(--text-muted);">
+            "10月15日 夜班记录<br>
+            21:30 — 巡查7班，教室内有学生，正常。<br>
+            21:45 — <span class='tamper-mark'>监控画面突然中断，持续约5分钟</span>。期间听到走廊有争吵声，但听不清内容。<br>
+            21:50 — 监控恢复，画面显示教室已空。但...（此处被水渍模糊）...<br>
+            22:00 — 再次巡查7班，确认无人。锁门。<br>
+            <span class='evidence-highlight'>备注：班长当晚来过监控室，说是要拷贝一段录像。"</span>
+          </span>
+        </p>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch3-monitor-log','监控室值班记录','值班记录提到班长当晚来过监控室拷贝录像。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <!-- 新增：误导性线索 -->
+      <div class="card" style="border-left:4px solid var(--success);opacity:0.85;">
+        <div class="card-title"><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 教务处补充说明</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          关于班长前往监控室的说明：<br><br>
+          经调查，班长于21:50前往监控室是<span class="evidence-highlight">经班主任授权</span>，目的是拷贝班级活动录像用于班会展示。该行为符合学校规定，不存在违规操作。<br><br>
+          关于21:45-21:50的监控中断，技术部门已确认是<strong>线路老化导致的临时故障</strong>，与任何人员无关。
+        </p>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--warning);" onclick="findClue('ch3-excuse','教务处的解释','教务处为班长的监控室之行提供了解释。','half')">[记录疑点]</span>
+          <span style="cursor:pointer;color:var(--accent-blue);margin-left:12px;" onclick="findClue('ch3-tech-fake','技术部门的结论','"线路老化"的解释与维护日志记录不符。','fake')">[记录疑点]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 签到台账系统 -->
+<div class="page" id="page-ch3-signin">
+  <div class="school-site">
+    <div class="site-header" style="background:linear-gradient(135deg,#3a3a2a,#4a4a3a);">
+      <h1><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 晚自习签到台账系统</h1>
+      <div class="sub">育华中学教务处 · 电子签到管理平台</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch3-monitor');return false;">监控回放</a>
+      <a href="#" class="active" onclick="showPage('page-ch3-signin');return false;">签到台账</a>
+      <a href="#" onclick="showPage('page-ch3-weather');return false;">天气存档</a>
+      <a href="#" onclick="showPage('page-ch3-classroom');return false;">教室记录</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">2025-10-15 签到记录</div>
+        <div class="card-subtitle">台账编号：SIGN-20251015-07 | 导出时间：2025-10-16 08:00</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>姓名</th><th>学号</th><th>签到时间</th><th>签退时间</th><th>签到方式</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>王明</td><td>20220301</td><td>18:05</td><td>21:30</td><td>刷卡</td></tr>
+            <tr><td>李婷</td><td>20220305</td><td>18:02</td><td>21:15</td><td>刷卡</td></tr>
+            <tr><td>张浩</td><td>20220308</td><td>18:08</td><td>21:45</td><td>刷卡</td></tr>
+            <tr><td>刘洋</td><td>20220312</td><td>18:00</td><td>21:20</td><td>刷卡</td></tr>
+            <tr><td>陈雪</td><td>20220315</td><td>18:03</td><td>21:10</td><td>刷卡</td></tr>
+            <tr><td>赵伟</td><td>20220318</td><td>18:06</td><td>21:35</td><td>刷卡</td></tr>
+            <tr><td>孙丽</td><td>20220322</td><td>18:01</td><td>21:25</td><td>刷卡</td></tr>
+            <tr><td>周杰</td><td>20220325</td><td>18:04</td><td>21:40</td><td>刷卡</td></tr>
+            <tr><td>吴敏</td><td>20220328</td><td>18:07</td><td>21:50</td><td>刷卡</td></tr>
+            <tr class="erased" style="opacity:0.5;"><td>[数据已删除]</td><td>20220333</td><td class="date-anomaly">?</td><td class="date-anomaly">?</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;padding:10px;background:rgba(201,162,39,0.05);border-radius:6px;font-size:0.8rem;color:var(--text-secondary);">
+          <strong>系统备注：</strong>第10条记录（学号20220333）于10-16 02:35被标记为"数据异常"并隐藏。
+          <span style="cursor:pointer;color:var(--accent-blue);" onclick="findClue('ch3-signin-delete','签到记录删除','签到台账中第10条记录被标记为"数据异常"并隐藏。删除时间与其他记录一致。','real')">[查看删除日志]</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--warning);">
+        <div class="card-title"><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 系统警告</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          检测到以下异常：<br>
+          • 签退时间分布过于均匀（间隔5-15分钟），不符合正常离校模式<br>
+          • 学号20220333的原始签到记录已无法恢复<br>
+          • <span class="tamper-mark">系统管理员于02:35执行了批量数据清理操作</span>
+        </p>
+      </div>
+
+      <!-- 新增：时间线重建解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#f0f4f8,#e8eef4);">
+        <div class="card-title"><img src="icon-puzzle-piece.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 事件时间线重建</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;line-height:1.8;">
+          系统检测到时间线记录损坏。请按正确的时间顺序点击下方事件卡片，重建当晚的时间线。
+        </p>
+        <div id="timeline-puzzle" style="display:flex;flex-direction:column;gap:8px;margin:16px 0;">
+          <div class="timeline-card" data-order="3" onclick="selectTimelineCard(this)" style="padding:12px;background:#fff;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.85rem;">
+            <strong>事件A：</strong>值班老师巡查，教室内仍有人
+          </div>
+          <div class="timeline-card" data-order="1" onclick="selectTimelineCard(this)" style="padding:12px;background:#fff;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.85rem;">
+            <strong>事件B：</strong>晚自习开始，林知夏签到留校
+          </div>
+          <div class="timeline-card" data-order="4" onclick="selectTimelineCard(this)" style="padding:12px;background:#fff;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.85rem;">
+            <strong>事件C：</strong>监控"信号中断"，传感器仍检测到人体活动
+          </div>
+          <div class="timeline-card" data-order="2" onclick="selectTimelineCard(this)" style="padding:12px;background:#fff;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.85rem;">
+            <strong>事件D：</strong>李婷离开，证实后排靠窗仍有女生
+          </div>
+          <div class="timeline-card" data-order="5" onclick="selectTimelineCard(this)" style="padding:12px;background:#fff;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.85rem;">
+            <strong>事件E：</strong>教室清空，林知夏签退记录为空
+          </div>
+        </div>
+        <div id="timeline-selected" style="min-height:40px;padding:10px;background:rgba(58,90,124,0.05);border-radius:8px;margin-bottom:12px;font-size:0.85rem;color:var(--text-muted);">
+          已选择的顺序：<span id="timeline-order">（请点击上方卡片按正确顺序排列）</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" onclick="checkTimelineOrder()"><img src="icon-check.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证顺序</button>
+          <button class="btn" onclick="resetTimelinePuzzle()">↺ 重置</button>
+        </div>
+        <div id="timeline-result" style="display:none;margin-top:12px;padding:12px;border-radius:8px;font-size:0.85rem;"></div>
+      </div>
+
+      <!-- 新增：摩斯密码解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-radio.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 值班老师的手电筒暗号</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;line-height:1.8;">
+          在值班室的抽屉里，你发现了一张皱巴巴的纸条。上面画着手电筒闪烁的图案，旁边写着：<br>
+          <span style="font-style:italic;color:#888;">"如果我不能再说话了，就让光来代替我。"</span>
+        </p>
+        <div style="background:rgba(0,0,0,0.3);padding:20px;border-radius:8px;text-align:center;margin-bottom:16px;font-family:var(--font-mono);">
+          <div style="font-size:0.75rem;color:#888;margin-bottom:8px;">每个斜杠分隔一个字母</div>
+          <div id="morse-puzzle-code" aria-label="摩斯密码：B A N Z H A N G" style="color:var(--warning);font-size:clamp(1rem,2.3vw,1.25rem);letter-spacing:2px;line-height:2;overflow-wrap:anywhere;">
+            -... / .- / -. / --.. / .... / .- / -. / --.
+          </div>
+          <div style="font-size:0.75rem;color:#888;margin-top:8px;">短信号 = 点（.）｜长信号 = 划（-）</div>
+        </div>
+
+        <details open style="margin-bottom:16px;border:1px solid rgba(192,200,208,0.18);border-radius:8px;background:rgba(0,0,0,0.18);overflow:hidden;">
+          <summary style="cursor:pointer;padding:10px 12px;color:#fff;font-size:0.85rem;font-weight:600;user-select:none;">标准摩斯密码表（A–Z、0–9）</summary>
+          <div id="morse-reference-table" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(76px,1fr));gap:6px;padding:10px 12px 12px;font-size:0.75rem;">
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">A</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">B</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-...</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">C</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-.-.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">D</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-..</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">E</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">F</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">..-.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">G</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">--.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">H</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">....</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">I</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">..</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">J</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.---</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">K</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-.-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">L</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.-..</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">M</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">--</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">N</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">O</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">---</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">P</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.--.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">Q</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">--.-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">R</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.-.</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">S</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">...</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">T</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">U</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">..-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">V</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">...-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">W</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.--</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">X</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-..-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">Y</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-.--</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">Z</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">--..</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">0</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-----</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">1</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.----</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">2</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">..---</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">3</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">...--</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">4</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">....-</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">5</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">.....</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">6</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">-....</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">7</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">--...</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">8</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">---..</code></span>
+            <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px solid rgba(192,200,208,0.16);border-radius:5px;background:rgba(255,255,255,0.035);white-space:nowrap;"><strong style="color:#fff;">9</strong><code style="color:#c0c8d0;font-family:var(--font-mono);">----.</code></span>
+          </div>
+        </details>
+
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+          <label for="morse-input" style="font-size:0.85rem;flex:0 0 auto;">解码结果：</label>
+          <input type="text" id="morse-input" placeholder="输入 BANZHANG（不区分大小写）" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="morse-input-help" style="flex:1 1 220px;min-width:0;padding:10px;border:2px solid rgba(192,200,208,0.3);border-radius:6px;background:rgba(0,0,0,0.2);color:#fff;font-family:var(--font-mono);">
+          <button class="btn btn-primary" onclick="checkMorsePuzzle()" style="flex:0 0 auto;"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证解码</button>
+        </div>
+        <div id="morse-input-help" style="font-size:0.75rem;color:#777;margin:-4px 0 12px;">支持大小写混输；输入中间空格也可识别；按 Enter 可直接验证。</div>
+        <div id="morse-result" style="display:none;padding:12px;border-radius:8px;font-size:0.85rem;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 校园天气存档页 -->
+<div class="page" id="page-ch3-weather">
+  <div class="school-site">
+    <div class="site-header" style="background:linear-gradient(135deg,#2a2a4a,#3a3a5a);">
+      <h1><img src="icon-cloud-sun.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 校园天气存档</h1>
+      <div class="sub">育华中学环境监测站 · 历史气象数据查询</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch3-monitor');return false;">监控回放</a>
+      <a href="#" onclick="showPage('page-ch3-signin');return false;">签到台账</a>
+      <a href="#" class="active" onclick="showPage('page-ch3-weather');return false;">天气存档</a>
+      <a href="#" onclick="showPage('page-ch3-classroom');return false;">教室记录</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">2025年10月15日 蔚海市气象数据</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;">
+          <div style="text-align:center;padding:20px;background:linear-gradient(135deg,#e8f4fd,#d6e9f8);border-radius:8px;">
+            <div style="font-size:2rem;"><img src="icon-sym-moon.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">夜间天气</div>
+            <div style="font-size:1rem;font-weight:600;">晴朗</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:linear-gradient(135deg,#fef9e7,#fdf5d7);border-radius:8px;">
+            <div style="font-size:2rem;"><img src="icon-thermometer.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">夜间温度</div>
+            <div style="font-size:1rem;font-weight:600;">14°C</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:linear-gradient(135deg,#f0f8f0,#d6e8d6);border-radius:8px;">
+            <div style="font-size:2rem;"><img src="icon-wind.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">风速</div>
+            <div style="font-size:1rem;font-weight:600;">2级 东南风</div>
+          </div>
+        </div>
+        <div style="padding:12px;background:#fafbfc;border-radius:6px;font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
+          <strong>详细记录：</strong><br>
+          18:00 - 温度18°C，晴朗，微风<br>
+          21:00 - 温度15°C，晴朗，轻风<br>
+          <span class="evidence-highlight">21:30 - 温度14°C，晴朗，有轻微薄雾</span><br>
+          22:00 - 温度13°C，晴朗，能见度良好<br><br>
+          <span style="cursor:pointer;color:var(--accent-blue);" onclick="findClue('ch3-weather','天气记录','21:30出现了轻微薄雾。','half')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <div class="card" style="border:2px dashed var(--border);background:#fafbfc;">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 气象站角落的发现</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">
+          在气象数据报告的背面，有人用铅笔写了符号：
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;padding:16px;background:#fff;border-radius:8px;">
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-4','符号线索：日','气象报告背面画着太阳。旁边有字迹。','real')" title="点击调查"><img src="icon-sym-sun.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-5','符号线索：书','旁边还有一本书的图案。旁边也有字迹。','real')" title="点击调查"><img src="icon-sym-book.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 教室场景记录页 -->
+<div class="page" id="page-ch3-classroom">
+  <div class="school-site">
+    <div class="site-header" style="background:linear-gradient(135deg,#3a2a3a,#4a3a4a);">
+      <h1><img src="icon-school.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 教室场景记录</h1>
+      <div class="sub">高三（7）班 · 教室使用日志 · 设备管理系统</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch3-monitor');return false;">监控回放</a>
+      <a href="#" onclick="showPage('page-ch3-signin');return false;">签到台账</a>
+      <a href="#" onclick="showPage('page-ch3-weather');return false;">天气存档</a>
+      <a href="#" class="active" onclick="showPage('page-ch3-classroom');return false;">教室记录</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">7班教室设备使用日志</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-time">18:00</div>
+            <div class="timeline-content">教室照明开启，空调启动，人数约10人。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">20:00</div>
+            <div class="timeline-content">照明正常，空调运行，人数减少至约5人。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">21:15</div>
+            <div class="timeline-content">检测到人体活动，位置：后排靠窗。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">21:30</div>
+            <div class="timeline-content">照明状态：<span class="tamper-mark">手动关闭后重新开启</span>。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">21:45</div>
+            <div class="timeline-content">日志显示"教室已清空，设备关闭"。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">22:00</div>
+            <div class="timeline-content">照明关闭，空调关闭，教室锁定。</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(160,80,80,0.05);border-radius:6px;border-left:3px solid var(--danger);font-size:0.8rem;color:var(--text-secondary);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch3-sensor','传感器数据','21:45的日志声称教室已清空，但人体传感器仍检测到活动。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <!-- 新增：传感器数据解码解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-lock-closed.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 传感器原始数据解码</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;line-height:1.8;">
+          你在服务器缓存中发现了一段损坏的传感器原始数据。数据采用了一种简单的替换加密。
+        </p>
+        <div style="background:rgba(0,0,0,0.3);padding:16px;border-radius:8px;font-family:var(--font-mono);font-size:0.9rem;margin-bottom:16px;">
+          <div style="color:#888;margin-bottom:8px;font-size:0.75rem;">加密数据：</div>
+          <div style="color:var(--warning);letter-spacing:2px;">QEB NRFZH YOLHBK CLO</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+          <span style="font-size:0.85rem;">偏移量：</span>
+          <input type="number" id="decoder-shift" value="0" min="0" max="25" style="width:60px;padding:8px;border:2px solid rgba(192,200,208,0.3);border-radius:6px;background:rgba(0,0,0,0.2);color:#fff;font-family:var(--font-mono);">
+          <button class="btn btn-primary" onclick="decodeSensorData()"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 尝试解码</button>
+        </div>
+        <div id="decoder-result" style="display:none;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;font-family:var(--font-mono);font-size:0.9rem;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 备份台账存档页（解锁后） -->
+<div class="page" id="page-ch3-backup">
+  <div class="school-site page-corrupted">
+    <div class="site-header" style="background:linear-gradient(135deg,#4a3a3a,#5a4a4a);">
+      <h1 class="glitch" data-text="备份台账存档">备份台账存档</h1>
+      <div class="sub"><img src="icon-warning.svg" class="icon-img inline-icon" alt="" aria-hidden="true"> 系统自动备份 · 原始数据恢复</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch3-monitor');return false;">监控</a>
+      <a href="#" onclick="showPage('page-ch3-signin');return false;">台账</a>
+      <a href="#" class="active" onclick="showPage('page-ch3-backup');return false;">备份</a>
+      <a href="#" class="locked" data-target="page-ch3-trace" onclick="showPage('page-ch3-trace');return false;">残缺监控</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner danger">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 恢复的数据</strong> 以下内容来自系统自动备份，可能包含已被删除的原始记录。
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color:var(--danger);"><img src="icon-scroll.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 原始签到记录（备份恢复）</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>姓名</th><th>学号</th><th>签到</th><th>签退</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>王明</td><td>20220301</td><td>18:05</td><td>21:30</td></tr>
+            <tr><td>李婷</td><td>20220305</td><td>18:02</td><td>21:15</td></tr>
+            <tr><td>张浩</td><td>20220308</td><td>18:08</td><td>21:45</td></tr>
+            <tr><td>刘洋</td><td>20220312</td><td>18:00</td><td>21:20</td></tr>
+            <tr><td>陈雪</td><td>20220315</td><td>18:03</td><td>21:10</td></tr>
+            <tr><td>赵伟</td><td>20220318</td><td>18:06</td><td>21:35</td></tr>
+            <tr><td>孙丽</td><td>20220322</td><td>18:01</td><td>21:25</td></tr>
+            <tr><td>周杰</td><td>20220325</td><td>18:04</td><td>21:40</td></tr>
+            <tr><td>吴敏</td><td>20220328</td><td>18:07</td><td>21:50</td></tr>
+            <tr style="background:rgba(74,124,89,0.08);"><td><strong style="color:var(--success);">林知夏</strong></td><td>20220333</td><td>18:10</td><td class="date-anomaly">未签退</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;padding:12px;background:rgba(74,124,89,0.05);border-radius:6px;border-left:3px solid var(--success);">
+          <p style="font-size:0.85rem;color:var(--success);">
+            <strong>备份备注：</strong>林知夏同学于18:10签到，但签退记录为空。系统于22:05自动标记为"异常未签退"。该记录在02:35被人工删除。
+          </p>
+        </div>
+      </div>
+
+      <div class="archive-folder">
+        <h4><img src="icon-folder.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 备份元数据</h4>
+        <p style="font-size:0.85rem;line-height:1.8;">
+          备份ID：BACKUP-SIGN-20251015-001<br>
+          创建时间：2025-10-15 23:00（系统自动）<br>
+          备份大小：<span class="tamper-mark">原始 24KB → 当前 21KB</span><br>
+          差异检测：3条记录被修改，1条记录被删除<br>
+          修改者：admin（内网-班长终端）
+        </p>
+      </div>
+
+      <!-- 新增：档案柜密码锁解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-lock-closed.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 加密档案柜</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;line-height:1.8;">
+          你发现了一个被锁住的档案柜。柜门上贴着一张纸条：<br>
+          <span style="font-style:italic;color:#888;">"密码是当晚离开教室的最后一个人的学号后四位。"</span>
+        </p>
+        <div style="background:rgba(0,0,0,0.3);padding:20px;border-radius:8px;text-align:center;margin-bottom:16px;">
+          <div style="font-size:2rem;letter-spacing:8px;font-family:var(--font-mono);margin-bottom:12px;" id="lock-display">_ _ _ _</div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn" onclick="enterLockDigit(0)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">0</button>
+            <button class="btn" onclick="enterLockDigit(1)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">1</button>
+            <button class="btn" onclick="enterLockDigit(2)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">2</button>
+            <button class="btn" onclick="enterLockDigit(3)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">3</button>
+            <button class="btn" onclick="enterLockDigit(4)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">4</button>
+            <button class="btn" onclick="enterLockDigit(5)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">5</button>
+            <button class="btn" onclick="enterLockDigit(6)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">6</button>
+            <button class="btn" onclick="enterLockDigit(7)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">7</button>
+            <button class="btn" onclick="enterLockDigit(8)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">8</button>
+            <button class="btn" onclick="enterLockDigit(9)" style="width:40px;height:40px;padding:0;font-size:1.1rem;">9</button>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;">
+            <button class="btn btn-primary" onclick="checkLockCode()"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 尝试解锁</button>
+            <button class="btn" onclick="resetLock()">↺ 清除</button>
+          </div>
+        </div>
+        <div id="lock-result" style="display:none;padding:12px;border-radius:8px;font-size:0.85rem;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 残缺监控溯源页（解锁后） -->
+<div class="page" id="page-ch3-trace">
+  <div class="school-site page-corrupted">
+    <div class="site-header" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);">
+      <h1 class="glitch" data-text="残缺监控溯源">残缺监控溯源</h1>
+      <div class="sub" style="color:var(--danger);"><img src="icon-warning.svg" class="icon-img inline-icon" alt="" aria-hidden="true"> 被遗忘的留校者</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch3-monitor');return false;">监控</a>
+      <a href="#" onclick="showPage('page-ch3-backup');return false;">备份</a>
+      <a href="#" class="active" onclick="showPage('page-ch3-trace');return false;">残缺溯源</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner danger">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 核心证据</strong> 以下监控片段为系统深度恢复的残留数据，画面质量极低但具有关键价值。
+      </div>
+
+      <div class="card" style="background:var(--bg-dark);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-video.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 恢复片段：CAM-07-01 21:47:23</div>
+        <div class="monitor-frame" style="background:#0a0a0a;">
+          <div class="timestamp" style="color:var(--danger);">21:47:23 [恢复帧]</div>
+          <div class="cam-view" style="height:250px;background:#111;">
+            <div style="text-align:center;color:#444;">
+              <div style="font-size:3rem;opacity:0.3;"><img src="icon-video.svg" class="icon-img inline-icon" alt="" aria-hidden="true"></div>
+              <div style="font-size:0.8rem;margin-top:12px;">画面严重损坏</div>
+              <div style="font-size:0.75rem;margin-top:8px;max-width:300px;line-height:1.6;color:#555;">
+                仅恢复到一个模糊轮廓：<br>
+                后排靠窗位置，<span style="color:#777;">一个身影</span>缓缓站起...<br>
+                画面中断。
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:12px;background:rgba(160,80,80,0.1);border-radius:6px;">
+          <p style="font-size:0.85rem;color:#c0c8d0;">
+            <strong style="color:var(--danger);">技术备注：</strong>该帧数据从磁盘未分配空间中恢复。原始视频在21:45被覆盖写入，但此帧因磁盘碎片未被完全清除。
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,#2a1a1a,#1a1a1a);border:2px solid var(--danger);">
+        <div class="card-title" style="color:var(--danger);"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 时间线重建</div>
+        <div style="font-size:0.85rem;color:#c0c8d0;line-height:2;">
+          <p>• 21:30 - 监控画面正常，教室内仍有人</p>
+          <p>• 21:35 - 走廊监控画面开始模糊</p>
+          <p>• <span style="color:var(--danger);">21:45 - 教室监控"信号中断"（人为删除）</span></p>
+          <p>• 21:47 - <span style="color:var(--warning);">恢复帧显示有人站起</span></p>
+          <p>• 22:00 - 教室已空，灯已关闭</p>
+          <p>• 02:35 - 班长终端执行数据清理</p>
+        </div>
+        <div style="margin-top:16px;text-align:center;">
+          <button class="btn btn-danger" onclick="findClue('ch3-timeline-complete','时间线闭环','21:45监控被人为删除，但21:47恢复帧显示有人站起。这说明林知夏在21:45之后仍在教室，与签到记录"未签退"完全吻合。','real');showToast('时间线闭环完成！',3000);"><img src="icon-check.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 确认时间线闭环</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 第四章：社交谣言溯源 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- 班级匿名社交墙 -->
+<div class="page" id="page-ch4-social">
+  <div class="school-site">
+    <div class="site-header" style="background:linear-gradient(135deg,#4a3a5a,#5a4a6a);">
+      <h1><img src="icon-thought.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 班级匿名社交墙</h1>
+      <div class="sub">育华中学 · 匿名树洞 · 2025届高三专区</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" class="active" onclick="showPage('page-ch4-social');return false;">社交墙</a>
+      <a href="#" onclick="showPage('page-ch4-chats');return false;">私密聊天</a>
+      <a href="#" onclick="showPage('page-ch4-leak');return false;">匿名爆料</a>
+      <a href="#" onclick="goToChapter(5);return false;">下一章 →</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner">
+        <strong><img src="icon-shield.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 声明</strong> 本墙完全匿名，发帖IP已被加密。但请记住：网络不是法外之地。
+      </div>
+
+      <div class="card">
+        <div class="card-title"><img src="icon-calendar.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 近期热门话题</div>
+
+        <div class="forum-post" data-clue="ch4-flood1" onclick="findClue('ch4-flood1','留言：火锅','关于周末聚餐的讨论','useless')">
+          <div class="author">@匿名用户 #8204</div>
+          <div class="time">10-10 12:30</div>
+          <div class="content">周末有人想去新开的那家火锅店吗？听说打八折！</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-fake1" onclick="findClue('ch4-fake1','留言：关于林知夏','有人发帖说林知夏"性格孤僻"','fake')">
+          <div class="author">@匿名用户 #9142</div>
+          <div class="time">10-12 18:45</div>
+          <div class="content">你们班那个林知夏是不是有点问题啊？整天独来独往的，看着就阴森。听说她晚上一个人留在教室，也不知道在干什么。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-real1" onclick="findClue('ch4-real1','留言：认识林知夏','有人称认识林知夏，说她人很好','real')">
+          <div class="author">@匿名用户 #3351</div>
+          <div class="time">10-13 09:20</div>
+          <div class="content">楼上别乱说。我认识林知夏，她就是比较内向而已，人很好的。你们7班的不要瞎造谣好吗？</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-fake2" onclick="findClue('ch4-fake2','留言：失踪传闻','有人传播"林知夏失踪了"的说法','fake')">
+          <div class="author">@匿名用户 #7283</div>
+          <div class="time">10-14 22:15</div>
+          <div class="content">听说了吗？7班有个女生失踪了！好像叫什么夏的。学校好像把消息压下来了，真可怕。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-half1" onclick="findClue('ch4-half1','留言：校方公告','校方发布了"无异常"公告','half')">
+          <div class="author">@校方公告助手</div>
+          <div class="time">10-15 08:00</div>
+          <div class="content">【公告】近日有关于我校学生的网络传言，经查证均为不实信息。我校所有学生均正常在校学习，请同学们不要信谣传谣。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-real2" onclick="findClue('ch4-real2','留言：集体沉默','有人观察到7班学生对林知夏的事情集体保持沉默','real')">
+          <div class="author">@匿名用户 #5529</div>
+          <div class="time">10-16 14:30</div>
+          <div class="content">我是隔壁班的，我发现7班的人对那个女生的事情都避而不谈。问他们就说"不知道""没听说"。这也太奇怪了吧？</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-flood2" onclick="findClue('ch4-flood2','留言：追剧','关于明星八卦的讨论','useless')">
+          <div class="author">@匿名用户 #1102</div>
+          <div class="time">10-17 20:00</div>
+          <div class="content">那个新剧你们看了吗？男主好帅啊啊啊！</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-fake3" onclick="findClue('ch4-fake3','留言：转学说法','有人声称林知夏转学了','fake')">
+          <div class="author">@匿名用户 #8847</div>
+          <div class="time">10-18 11:20</div>
+          <div class="content">听7班的人说那个女生转学了，去了外地。所以大家才不提她的。</div>
+        </div>
+
+        <!-- 新增：剧情转折的帖子 -->
+        <div class="forum-post" data-clue="ch4-twist1" onclick="findClue('ch4-twist1','留言：为班长说话','有人发帖称赞班长"为保护班级荣誉而承担责任"','half')">
+          <div class="author">@匿名用户 #6678</div>
+          <div class="time">10-19 16:45</div>
+          <div class="content">我是7班的。看到有人在骂我们班，我想说一句公道话。班长为了保护班级荣誉，一个人承担了所有压力。他才是那个最辛苦的人。请不要再传播不实信息了。</div>
+        </div>
+
+        <div class="forum-post" data-clue="ch4-twist2" onclick="findClue('ch4-twist2','留言：知情者的恐惧','一个疑似知情者的帖子，表达了对"被报复"的恐惧','real')">
+          <div class="author">@匿名用户 #2291</div>
+          <div class="time">10-19 23:10</div>
+          <div class="content">我知道真相。但我不能说。他们会报复我的。对不起...对不起...我只是想平安毕业。<br><br><span style="color:var(--danger);font-size:0.8rem;">[该用户已注销账号]</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 学生私密聊天截图存档页 -->
+<div class="page" id="page-ch4-chats">
+  <div class="school-site">
+    <div class="site-header" style="background:linear-gradient(135deg,#5a3a4a,#6a4a5a);">
+      <h1><img src="icon-chat.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 私密聊天截图存档</h1>
+      <div class="sub">系统备份 · 学生聊天数据 · 仅限授权查看</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch4-social');return false;">社交墙</a>
+      <a href="#" class="active" onclick="showPage('page-ch4-chats');return false;">私密聊天</a>
+      <a href="#" onclick="showPage('page-ch4-leak');return false;">匿名爆料</a>
+    </div>
+    <div class="site-body">
+      <div class="card">
+        <div class="card-title">聊天记录 #1：7班小群</div>
+        <div class="card-subtitle">群成员：陈雪、张浩、赵伟、刘洋 | 时间：10-14 至 10-16</div>
+        <div class="chat-record">
+          <div class="chat-msg">
+            <div class="chat-avatar">陈</div>
+            <div class="chat-bubble">明天就要月考了，你们准备得怎么样？</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">张</div>
+            <div class="chat-bubble">还行吧。对了，<span class="tamper-mark">那件事</span>你们可别说漏嘴了。</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">赵</div>
+            <div class="chat-bubble">什么事？</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">张</div>
+            <div class="chat-bubble">就是<span class="tamper-mark">名单</span>的事啊。班长不是说好了统一口径吗？</div>
+          </div>
+          <div class="chat-msg self">
+            <div class="chat-avatar">陈</div>
+            <div class="chat-bubble" style="background:var(--danger);">嘘！别在群里说这些！</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">刘</div>
+            <div class="chat-bubble">怕什么，我们又没做错什么。她自己要留下的。</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch4-chat1','群聊记录','7班小群成员的聊天记录，提到"统一口径"。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">聊天记录 #2：班长私信</div>
+        <div class="card-subtitle">参与人：班长、教务处张老师 | 时间：10-16 09:00</div>
+        <div class="chat-record">
+          <div class="chat-msg self">
+            <div class="chat-avatar">班</div>
+            <div class="chat-bubble" style="background:var(--accent-blue);">张老师，昨天的留校名单我已经重新提交过了。</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">师</div>
+            <div class="chat-bubble">好的，我看到了。怎么比昨天的少了一条？</div>
+          </div>
+          <div class="chat-msg self">
+            <div class="chat-avatar">班</div>
+            <div class="chat-bubble" style="background:var(--accent-blue);">那个同学<span class="tamper-mark">临时请假了</span>，没有参加晚自习。我昨天搞错了。</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">师</div>
+            <div class="chat-bubble">是这样啊。那签到记录呢？</div>
+          </div>
+          <div class="chat-msg self">
+            <div class="chat-avatar">班</div>
+            <div class="chat-bubble" style="background:var(--accent-blue);">签到记录我也更新了，麻烦您通过一下。</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar">师</div>
+            <div class="chat-bubble">好的，已经通过了。以后注意核对清楚再提交。</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch4-chat2','私信记录','班长与教务处老师的私信，提到林知夏"临时请假"。','real')">[记录疑点]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 校园匿名爆料页 -->
+<div class="page" id="page-ch4-leak">
+  <div class="school-site page-corrupted">
+    <div class="site-header" style="background:linear-gradient(135deg,#3a3a3a,#4a4a4a);">
+      <h1 class="glitch" data-text="校园匿名爆料">校园匿名爆料</h1>
+      <div class="sub"><img src="icon-warning.svg" class="icon-img inline-icon" alt="" aria-hidden="true"> 未经核实的信息 · 仅供参考</div>
+    </div>
+    <div class="site-nav">
+      <a href="#" onclick="showPage('page-ch4-social');return false;">社交墙</a>
+      <a href="#" onclick="showPage('page-ch4-chats');return false;">私密聊天</a>
+      <a href="#" class="active" onclick="showPage('page-ch4-leak');return false;">匿名爆料</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner danger">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 警告</strong> 以下内容来自匿名投稿，真实性未经核实。但每一条爆料都可能是拼图的一部分。
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--warning);">
+        <div class="card-title">爆料 #1：关于林知夏</div>
+        <div class="card-subtitle">投稿时间：10-18 23:45 | 可信度：待验证</div>
+        <div class="memo-paper" style="background:linear-gradient(135deg,#fff8f0,#fff0e0);">
+          <div class="memo-text">
+            我是7班的学生，但我不能再沉默了。<br><br>
+            林知夏没有失踪，也没有转学。<span class="evidence-highlight">她只是被我们从所有记录中抹去了。</span><br><br>
+            班长组织我们统一口径，说名单上只有9个人。教务处那边也是班长去处理的。<br><br>
+            我知道这样做不对，但我不敢说出来。全班都在配合这个谎言，我一个人说出来会被排挤的。<br><br>
+            求求你们，如果有人能看到这条消息，请帮帮她。她只是想安静地学习而已，为什么要这样对她？
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch4-leak1','匿名爆料#1','匿名学生的爆料，提到林知夏被"从所有记录中抹去"。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--warning);">
+        <div class="card-title">爆料 #2：班长的动机</div>
+        <div class="card-subtitle">投稿时间：10-19 01:20 | 可信度：待验证</div>
+        <div class="memo-paper" style="background:linear-gradient(135deg,#fff8f0,#fff0e0);">
+          <div class="memo-text">
+            我是学生会的人，我知道一些事情。<br><br>
+            班长之所以这么做，是因为<span class="evidence-highlight">如果林知夏"失踪"的事情被学校知道，7班会被取消本学期的评优资格</span>。<br><br>
+            班长是冲着市三好学生去的，不能有任何污点。<br><br>
+            而且，如果学校调查起来，可能会发现班上很多同学平时对林知夏的排挤和孤立。到时候不只是班长，很多人都会被处分。<br><br>
+            所以班长才组织了这次"统一口径"。说是为了班级荣誉，其实是为了自保。
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+          <span style="cursor:pointer;color:var(--danger);" onclick="findClue('ch4-leak2','匿名爆料#2','匿名学生的爆料，揭示了隐瞒真相的可能动机。','real')">[记录疑点]</span>
+        </div>
+      </div>
+
+      <!-- 新增：文件碎片重组解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-puzzle-piece.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 碎纸重组</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;line-height:1.8;">
+          你在垃圾桶里发现了一些被撕碎的纸条碎片。似乎有人匆忙中销毁了某份文件...
+        </p>
+        <div id="shred-puzzle" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0;">
+          <div class="shred-piece" data-order="1" onclick="selectShredPiece(this)" style="padding:12px 16px;background:rgba(0,0,0,0.3);border:2px solid rgba(192,200,208,0.2);border-radius:8px;cursor:pointer;font-size:0.85rem;min-width:120px;text-align:center;transition:all 0.2s;">
+            <div>那晚的事情</div>
+          </div>
+          <div class="shred-piece" data-order="3" onclick="selectShredPiece(this)" style="padding:12px 16px;background:rgba(0,0,0,0.3);border:2px solid rgba(192,200,208,0.2);border-radius:8px;cursor:pointer;font-size:0.85rem;min-width:120px;text-align:center;transition:all 0.2s;">
+            <div>知夏</div>
+          </div>
+          <div class="shred-piece" data-order="5" onclick="selectShredPiece(this)" style="padding:12px 16px;background:rgba(0,0,0,0.3);border:2px solid rgba(192,200,208,0.2);border-radius:8px;cursor:pointer;font-size:0.85rem;min-width:120px;text-align:center;transition:all 0.2s;">
+            <div>是我们错了</div>
+          </div>
+          <div class="shred-piece" data-order="7" onclick="selectShredPiece(this)" style="padding:12px 16px;background:rgba(0,0,0,0.3);border:2px solid rgba(192,200,208,0.2);border-radius:8px;cursor:pointer;font-size:0.85rem;min-width:120px;text-align:center;transition:all 0.2s;">
+            <div>林</div>
+          </div>
+          <div class="shred-piece" data-order="9" onclick="selectShredPiece(this)" style="padding:12px 16px;background:rgba(0,0,0,0.3);border:2px solid rgba(192,200,208,0.2);border-radius:8px;cursor:pointer;font-size:0.85rem;min-width:120px;text-align:center;transition:all 0.2s;">
+            <div>同学对不起</div>
+          </div>
+        </div>
+        <div id="shred-selected" style="min-height:40px;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;margin-bottom:12px;font-size:0.85rem;color:#888;">
+          重组内容：<span id="shred-text">（请点击碎片按正确顺序排列，再次点击可取消）</span>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <button class="btn btn-primary" onclick="checkShredOrder()"><img src="icon-check.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证重组</button>
+          <button class="btn" onclick="resetShredPuzzle()">↺ 重置</button>
+        </div>
+        <div id="shred-result" style="display:none;margin-top:12px;padding:12px;border-radius:8px;font-size:0.85rem;"></div>
+      </div>
+
+      <!-- 新增：隐藏密码本解谜 -->
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+        <div class="card-title" style="color:#fff;"><img src="icon-notebook.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 陈雪的密码本</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;line-height:1.8;">
+          在陈雪的课桌深处，你发现了一个带锁的小本子。本子的封面贴着一张便签：<br>
+          <span style="font-style:italic;color:#888;">"密码是今晚最响亮的声音。"</span>
+        </p>
+        <div style="background:rgba(0,0,0,0.3);padding:20px;border-radius:8px;text-align:center;margin-bottom:16px;">
+          <div style="font-size:2rem;margin-bottom:8px;"><img src="icon-sym-lock.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+          <div style="font-size:0.85rem;color:#888;margin-bottom:12px;">字母密码锁</div>
+          <input type="text" id="hidden-code-input" placeholder="输入英文密码..." maxlength="10" style="width:200px;padding:10px;border:2px solid rgba(192,200,208,0.3);border-radius:6px;background:rgba(0,0,0,0.2);color:#fff;font-family:var(--font-mono);text-align:center;letter-spacing:4px;">
+        </div>
+        <div style="text-align:center;">
+          <button class="btn btn-primary" onclick="checkHiddenCode()"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 尝试解锁</button>
+        </div>
+        <div id="hidden-code-result" style="display:none;margin-top:12px;padding:12px;border-radius:8px;font-size:0.85rem;"></div>
+      </div>
+
+      <div class="card" style="border:2px dashed var(--border);background:#fafbfc;">
+        <div class="card-title"><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 页面底部发现</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">
+          在爆料页面的服务器日志中，你发现了一些符号：
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;padding:16px;background:#fff;border-radius:8px;">
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-6','符号线索：眼','服务器日志中画着眼睛的图案。旁边有字迹。','real')" title="点击调查"><img src="icon-sym-eye.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-7','符号线索：口','旁边还有一个嘴的图案。旁边也有字迹。','real')" title="点击调查"><img src="icon-sym-mouth.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-8','符号线索：火','日志角落画着火焰的图案，旁边写着："怒火中烧，掩盖真相。掩，是遮遮掩掩的第一个音节。"','real')" title="点击调查"><img src="icon-sym-fire.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+          <div style="font-size:2rem;cursor:pointer;" onclick="findClue('sym-clue-9','符号线索：山','日志另一角画着山的图案，旁边写着："山高遮目，盖棺定论。盖，是掩盖的最后一个音节。"','real')" title="点击调查"><img src="icon-sym-mountain.svg" class="icon-img symbol-clue-icon" alt="" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- 隐藏彩蛋触发器 -->
+      <div style="text-align:center;margin-top:30px;opacity:0.08;font-size:0.65rem;color:#999;cursor:pointer;user-select:none;" onclick="triggerEasterEgg()" title="?">
+        [系统调试模式]
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 第五章：全员谎言终局 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- 全局复盘页面 -->
+<div class="page" id="page-ch5-review">
+  <div class="school-site" style="background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+    <div class="site-header" style="background:linear-gradient(135deg,#4a3a3a,#5a4a4a);">
+      <h1><img src="icon-search.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 全局逻辑复盘</h1>
+      <div class="sub">最终审查 · 真相还原系统 · 所有证据交叉验证</div>
+    </div>
+    <div class="site-nav" style="background:#252a33;border-color:#3a3d45;">
+      <a href="#" class="active" onclick="showPage('page-ch5-review');return false;" style="color:#c0c8d0;">全局复盘</a>
+      <a href="#" onclick="showPage('page-ch5-truth');return false;" style="color:#8a9aaa;">真相档案</a>
+      <a href="#" onclick="showPage('page-ch5-puzzle');return false;" style="color:#8a9aaa;">最终谜题</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner danger">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 最终审查</strong> 你已经收集了所有的线索碎片。现在，是时候还原真相了。
+      </div>
+
+      <div id="completion-display" style="margin-bottom:20px;padding:16px;background:rgba(58,90,124,0.1);border-radius:8px;border:1px solid rgba(58,90,124,0.2);"></div>
+
+      <div class="investigation-board" style="background:linear-gradient(135deg,#252a33,#1a1d23);border-color:#3a3d45;">
+        <h3><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 证据看板</h3>
+        <div class="board-grid" id="evidence-board">
+          <div class="board-item" data-clue="ch1-name" onclick="markClue('ch1-name','real')">被抹去的名字</div>
+          <div class="board-item" data-clue="ch1-backup" onclick="markClue('ch1-backup','real')">备份记录</div>
+          <div class="board-item" data-clue="ch2-chat1" onclick="markClue('ch2-chat1','real')">聊天记录#1</div>
+          <div class="board-item" data-clue="ch2-chat2" onclick="markClue('ch2-chat2','real')">聊天记录#2</div>
+          <div class="board-item" data-clue="ch3-monitor-gap" onclick="markClue('ch3-monitor-gap','real')">监控缺失</div>
+          <div class="board-item" data-clue="ch3-sensor" onclick="markClue('ch3-sensor','real')">传感器数据</div>
+          <div class="board-item" data-clue="ch4-chat1" onclick="markClue('ch4-chat1','real')">群聊记录</div>
+          <div class="board-item" data-clue="ch4-leak1" onclick="markClue('ch4-leak1','real')">匿名爆料#1</div>
+          <div class="board-item" data-clue="ch4-leak2" onclick="markClue('ch4-leak2','real')">匿名爆料#2</div>
+          <div class="board-item" data-clue="ch2-fake1" onclick="markClue('ch2-fake1','fake')">留言：全员已走</div>
+          <div class="board-item" data-clue="ch2-fake2" onclick="markClue('ch2-fake2','fake')">留言：没有第10人</div>
+          <div class="board-item" data-clue="ch2-contra-c" onclick="markClue('ch2-contra-c','fake')">班长的证词</div>
+        </div>
+        <div style="margin-top:16px;font-size:0.85rem;color:#8a9aaa;">
+          点击上方证据可标记真伪。标记完成后，逻辑进度将自动更新。
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;"><img src="icon-clock.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 完整时间线重建</div>
+        <div class="timeline" id="ch5-review-timeline">
+          <div class="timeline-item real">
+            <div class="timeline-time">18:00</div>
+            <div class="timeline-content">晚自习开始。林知夏（学号20220333）签到留校。</div>
+          </div>
+          <div class="timeline-item real">
+            <div class="timeline-time">19:45</div>
+            <div class="timeline-content">匿名同学B看到后排靠窗有女生独自坐着。</div>
+          </div>
+          <div class="timeline-item real">
+            <div class="timeline-time">21:15</div>
+            <div class="timeline-content">李婷离开，证实后排靠窗仍有女生。</div>
+          </div>
+          <div class="timeline-item real">
+            <div class="timeline-time">21:30</div>
+            <div class="timeline-content">值班老师巡查，教室内仍有人。监控画面开始异常。</div>
+          </div>
+          <div class="timeline-item real">
+            <div class="timeline-time">21:45</div>
+            <div class="timeline-content">监控"信号中断"。传感器仍检测到人体活动。恢复帧显示有人站起。</div>
+          </div>
+          <div class="timeline-item real">
+            <div class="timeline-time">22:00</div>
+            <div class="timeline-content">教室清空，灯关闭。林知夏签退记录为空。</div>
+          </div>
+          <div class="timeline-item fake">
+            <div class="timeline-time">22:15</div>
+            <div class="timeline-content">班长提交名单，原始记录显示10人。</div>
+          </div>
+          <div class="timeline-item fake">
+            <div class="timeline-time">次日 02:35</div>
+            <div class="timeline-content">班长终端执行数据清理。林知夏被从所有记录中删除。</div>
+          </div>
+        </div>
+        <div id="timeline-placeholder" style="display:none;padding:20px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+          时间线尚未解锁。请在之前的章节中收集线索，每发现一条相关线索，时间线将逐步揭示。
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;"><img src="icon-question.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 终极问题</div>
+        <p style="font-size:0.9rem;color:#c0c8d0;line-height:1.8;margin-bottom:16px;">
+          基于你收集的所有证据和梳理的逻辑链条，回答以下问题：
+        </p>
+        <div class="choice-group">
+          <div class="choice-btn" onclick="selectAnswer('q1','a',event)">
+            <strong>A.</strong> 林知夏遭遇了超自然事件，被"名单吞噬"消失了。
+          </div>
+          <div class="choice-btn" onclick="selectAnswer('q1','b',event)">
+            <strong>B.</strong> 林知夏在晚自习后自行离开，但因系统故障导致记录丢失。
+          </div>
+          <div class="choice-btn" onclick="selectAnswer('q1','c',event)">
+            <strong>C.</strong> 林知夏被全班同学和班长刻意从所有记录中抹去，以掩盖集体霸凌和隐瞒真相的事实。
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button class="btn btn-primary" style="padding:14px 40px;font-size:1rem;" onclick="checkFinalAnswer()"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 提交最终答案</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 真相档案页面 -->
+<div class="page" id="page-ch5-truth">
+  <div class="school-site" style="background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+    <div class="site-header" style="background:linear-gradient(135deg,#3a4a3a,#4a5a4a);">
+      <h1><img src="icon-scroll.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 最终真相档案</h1>
+      <div class="sub">仅限完成全局逻辑复盘的调查者访问</div>
+    </div>
+    <div class="site-nav" style="background:#252a33;border-color:#3a3d45;">
+      <a href="#" onclick="showPage('page-ch5-review');return false;" style="color:#8a9aaa;">全局复盘</a>
+      <a href="#" class="active" onclick="showPage('page-ch5-truth');return false;" style="color:#c0c8d0;">真相档案</a>
+      <a href="#" onclick="showPage('page-ch5-puzzle');return false;" style="color:#8a9aaa;">最终谜题</a>
+    </div>
+    <div class="site-body">
+      <div class="truth-archive">
+        <h2>沉默的晚自习</h2>
+        <div class="quote">
+          "这所教室从没有诡异的诅咒。<br><br>
+          最可怕的从来不是灵异怪谈，而是一群人刻意堆砌的谎言、混杂的误导与集体的沉默。<br><br>
+          碎片化的虚假信息、盲从的跟风质疑、无心的冷眼旁观，最终拼凑成一张困住少年的网，毁掉了一个人的青春。<br><br>
+          所谓消失的留校名单，是被信息迷雾掩盖的真相，也是无人敢于正视的青春遗憾。"
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;"><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 完整真相</div>
+        <div style="font-size:0.9rem;color:#c0c8d0;line-height:2;">
+          <p><strong style="color:#fff;">事件经过：</strong></p>
+          <p>2025年10月15日晚自习期间，林知夏像往常一样留校自习。她没有参加任何补习，只是想在安静的环境中学习。</p>
+          <p>21:30后，其他留校学生陆续离开。林知夏因专注学习没有注意到时间。</p>
+          <p>21:45左右，班长返回教室，发现林知夏仍在。两人发生短暂争执。班长要求林知夏立即离开，林知夏拒绝。</p>
+          <p><span class="evidence-highlight">班长一怒之下将林知夏锁在教室内，随后前往监控室删除了21:45-21:50的录像。</span></p>
+          <p>22:00，值班老师巡查时发现教室已空（林知夏设法从窗户离开），但未签退。</p>
+          <p style="margin-top:16px;"><strong style="color:#fff;">掩盖过程：</strong></p>
+          <p>班长发现林知夏未签退后，担心影响班级评优和个人声誉，决定隐瞒此事。</p>
+          <p>班长组织相关同学统一口径，将林知夏从留校名单中删除。</p>
+          <p>陈雪协助修改了签到台账。张浩负责处理监控记录。</p>
+          <p>全班同学要么主动参与，要么选择沉默，共同完成了这场集体谎言。</p>
+          <p style="margin-top:16px;"><strong style="color:#fff;">最终的反转：</strong></p>
+          <p>林知夏在晚自习后自行回家。她不知道自己的记录被删除，也不知道全班同学对她的事情讳莫如深。</p>
+          <p>当她第二天来学校时，发现没有人提起昨晚的事，仿佛她从未存在过。</p>
+          <p>但最可怕的是——<span class="evidence-highlight">林知夏选择了沉默</span>。她没有质问任何人，没有向老师反映，只是默默地接受了这种"不存在"。</p>
+          <p>这种<span style="color:var(--danger);font-weight:600;">"双向沉默"</span>——集体的隐瞒和受害者的隐忍——才是这个事件最残酷的真相。</p>
+        </div>
+      </div>
+
+      <!-- 新增：深度反思 -->
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;"><img src="icon-thought.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 深度反思</div>
+        <div style="font-size:0.85rem;color:#c0c8d0;line-height:2;">
+          <p>在这个事件中，没有人是纯粹无辜的，也没有人是绝对邪恶的：</p>
+          <p><strong style="color:var(--warning);">班长</strong> —— 出于自私和恐惧，主导了掩盖行动。但他也是体制下"优秀生"压力的牺牲品。</p>
+          <p><strong style="color:var(--accent-cold);">陈雪</strong> —— 内心充满愧疚，却选择了服从。她的忏悔证明了良知的存在，但也暴露了懦弱的代价。</p>
+          <p><strong style="color:#888;">其他同学</strong> —— 大多数只是"没有阻止"。但正是这种沉默，让谎言得以延续。</p>
+          <p><strong style="color:var(--success);">林知夏</strong> —— 受害者，却也选择了沉默。她的隐忍让真相更加难以浮出水面。</p>
+          <p style="margin-top:16px;font-style:italic;color:#888;">
+            "我们最终都会成为自己所忍受的那种人。"<br>
+            当你选择沉默时，你不仅仅是在保护自己——你也在保护那些需要被揭露的真相。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 最终符号谜题页面 -->
+<div class="page" id="page-ch5-puzzle">
+  <div class="school-site" style="background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+    <div class="site-header" style="background:linear-gradient(135deg,#3a3a4a,#4a4a5a);">
+      <h1><img src="icon-crystal.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 最终符号解谜</h1>
+      <div class="sub">真相的钥匙，藏在符号之中</div>
+    </div>
+    <div class="site-nav" style="background:#252a33;border-color:#3a3d45;">
+      <a href="#" onclick="showPage('page-ch5-review');return false;" style="color:#8a9aaa;">全局复盘</a>
+      <a href="#" onclick="showPage('page-ch5-truth');return false;" style="color:#8a9aaa;">真相档案</a>
+      <a href="#" class="active" onclick="showPage('page-ch5-puzzle');return false;" style="color:#c0c8d0;">最终谜题</a>
+    </div>
+    <div class="site-body">
+      <div class="card" style="background:linear-gradient(135deg,#1e2128,#252a33);border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">谜题一：被抹去的名字</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;">
+          通过之前找到的线索，你了解到每个符号代表一个拼音音节。组合起来，就是被抹去的那个人名。
+        </p>
+        <div class="symbol-panel" style="background:transparent;margin:0;">
+          <div class="symbol-row">
+            <div class="symbol-item" data-symbol="sym-tree" onclick="onSymbolClick('sym-tree')"><img src="icon-sym-tree.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item" data-symbol="sym-water" onclick="onSymbolClick('sym-water')"><img src="icon-sym-water.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item" data-symbol="sym-moon" onclick="onSymbolClick('sym-moon')"><img src="icon-sym-moon.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+          </div>
+          <div class="symbol-input-area" id="puzzle1-input">
+            <div class="symbol-input-box" data-idx="0"></div>
+            <div class="symbol-input-box" data-idx="1"></div>
+            <div class="symbol-input-box" data-idx="2"></div>
+            <div class="symbol-input-box" data-idx="3"></div>
+            <div class="symbol-input-box" data-idx="4"></div>
+            <div class="symbol-input-box" data-idx="5"></div>
+            <div class="symbol-input-box" data-idx="6"></div>
+            <div class="symbol-input-box" data-idx="7"></div>
+            <div class="symbol-input-box" data-idx="8"></div>
+          </div>
+          <div style="text-align:center;margin-top:12px;">
+            <input type="text" class="puzzle-input" id="puzzle1-answer" placeholder="输入拼音答案..." style="background:rgba(0,0,0,0.2);color:#fff;border-color:rgba(192,200,208,0.3);">
+            <button class="btn btn-primary" onclick="checkPuzzle('puzzle1')"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,#1e2128,#252a33);border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">谜题二：隐藏的真相</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;">
+          符号组合揭示了这个事件的本质。
+        </p>
+        <div class="symbol-panel" style="background:transparent;margin:0;">
+          <div class="symbol-row">
+            <div class="symbol-item" data-symbol="sym-sun" onclick="onSymbolClick('sym-sun')"><img src="icon-sym-sun.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item" data-symbol="sym-eye" onclick="onSymbolClick('sym-eye')"><img src="icon-sym-eye.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+          </div>
+          <div class="symbol-input-area" id="puzzle2-input">
+            <div class="symbol-input-box" data-idx="0"></div>
+            <div class="symbol-input-box" data-idx="1"></div>
+            <div class="symbol-input-box" data-idx="2"></div>
+            <div class="symbol-input-box" data-idx="3"></div>
+            <div class="symbol-input-box" data-idx="4"></div>
+            <div class="symbol-input-box" data-idx="5"></div>
+            <div class="symbol-input-box" data-idx="6"></div>
+            <div class="symbol-input-box" data-idx="7"></div>
+          </div>
+          <div style="text-align:center;margin-top:12px;">
+            <input type="text" class="puzzle-input" id="puzzle2-answer" placeholder="输入拼音答案..." style="background:rgba(0,0,0,0.2);color:#fff;border-color:rgba(192,200,208,0.3);">
+            <button class="btn btn-primary" onclick="checkPuzzle('puzzle2')"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,#1e2128,#252a33);border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">谜题三：被掩盖的事实</div>
+        <p style="font-size:0.85rem;margin-bottom:16px;opacity:0.8;">
+          这个符号组合，描述了这个事件最可怕的一面。
+        </p>
+        <div class="symbol-panel" style="background:transparent;margin:0;">
+          <div class="symbol-row">
+            <div class="symbol-item" data-symbol="sym-eye" onclick="onSymbolClick('sym-eye')"><img src="icon-sym-eye.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item" data-symbol="sym-fire" onclick="onSymbolClick('sym-fire')"><img src="icon-sym-fire.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+            <div class="symbol-item" data-symbol="sym-mountain" onclick="onSymbolClick('sym-mountain')"><img src="icon-sym-mountain.svg" class="icon-img symbol-item-icon" alt="" aria-hidden="true"></div>
+          </div>
+          <div class="symbol-input-area" id="puzzle3-input">
+            <div class="symbol-input-box" data-idx="0"></div>
+            <div class="symbol-input-box" data-idx="1"></div>
+            <div class="symbol-input-box" data-idx="2"></div>
+            <div class="symbol-input-box" data-idx="3"></div>
+            <div class="symbol-input-box" data-idx="4"></div>
+            <div class="symbol-input-box" data-idx="5"></div>
+            <div class="symbol-input-box" data-idx="6"></div>
+            <div class="symbol-input-box" data-idx="7"></div>
+            <div class="symbol-input-box" data-idx="8"></div>
+          </div>
+          <div style="text-align:center;margin-top:12px;">
+            <input type="text" class="puzzle-input" id="puzzle3-answer" placeholder="输入拼音答案..." style="background:rgba(0,0,0,0.2);color:#fff;border-color:rgba(192,200,208,0.3);">
+            <button class="btn btn-primary" onclick="checkPuzzle('puzzle3')"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 验证</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#1a2520,#1d3025);">
+        <div class="card-title" style="color:var(--success);"><img src="icon-sym-book.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 符号线索汇总</div>
+        <div style="font-size:0.85rem;color:#c0c8d0;line-height:2;" id="symbol-clues-summary">
+          <p>你在调查过程中发现了以下符号线索：</p>
+          <p style="opacity:0.5;">（符号线索将在你找到后显示在这里）</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button class="btn btn-success" style="padding:14px 40px;font-size:1rem;" onclick="goToLogicCheck()"><img src="icon-lock-closed.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 进入逻辑验证</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 逻辑验证页面（新增） -->
+<div class="page" id="page-ch5-logic">
+  <div class="school-site" style="background:linear-gradient(135deg,#1a1d23,#252a33);color:#c0c8d0;">
+    <div class="site-header" style="background:linear-gradient(135deg,#3a3a4a,#4a4a5a);">
+      <h1><img src="icon-lock-closed.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 逻辑验证</h1>
+      <div class="sub">回答以下问题，证明你已掌握真相</div>
+    </div>
+    <div class="site-nav" style="background:#252a33;border-color:#3a3d45;">
+      <a href="#" onclick="showPage('page-ch5-review');return false;" style="color:#8a9aaa;">全局复盘</a>
+      <a href="#" class="active" onclick="showPage('page-ch5-logic');return false;" style="color:#c0c8d0;">逻辑验证</a>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner warning">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 验证机制</strong> 只有全部答对以下问题，才能解锁真相档案。
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">问题一：被抹去的人</div>
+        <p style="font-size:0.85rem;color:#c0c8d0;margin-bottom:16px;line-height:1.8;">
+          公示名单上被抹去名字的学生是谁？她的学号后四位是什么？
+        </p>
+        <div class="choice-group">
+          <div class="choice-btn" onclick="selectLogicAnswer('q1','a')">
+            <strong>A.</strong> 吴敏，0328
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q1','b')">
+            <strong>B.</strong> 陈雪，0315
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q1','c')">
+            <strong>C.</strong> 林知夏，0333
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">问题二：监控之谜</div>
+        <p style="font-size:0.85rem;color:#c0c8d0;margin-bottom:16px;line-height:1.8;">
+          21:45的监控录像显示"信号中断"，真正的原因是什么？
+        </p>
+        <div class="choice-group">
+          <div class="choice-btn" onclick="selectLogicAnswer('q2','a')">
+            <strong>A.</strong> 系统正常维护
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q2','b')">
+            <strong>B.</strong> 人为删除/篡改
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q2','c')">
+            <strong>C.</strong> 天气原因导致信号差
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">问题三：幕后推手</div>
+        <p style="font-size:0.85rem;color:#c0c8d0;margin-bottom:16px;line-height:1.8;">
+          组织"统一口径"、主导删除林知夏记录的人是谁？
+        </p>
+        <div class="choice-group">
+          <div class="choice-btn" onclick="selectLogicAnswer('q3','a')">
+            <strong>A.</strong> 教务处张老师
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q3','b')">
+            <strong>B.</strong> 班长
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q3','c')">
+            <strong>C.</strong> 陈雪
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e2128;border-color:#3a3d45;">
+        <div class="card-title" style="color:#fff;">问题四：最深层的动机</div>
+        <p style="font-size:0.85rem;color:#c0c8d0;margin-bottom:16px;line-height:1.8;">
+          班长隐瞒真相的最根本原因是什么？
+        </p>
+        <div class="choice-group">
+          <div class="choice-btn" onclick="selectLogicAnswer('q4','a')">
+            <strong>A.</strong> 为了保护林知夏的隐私
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q4','b')">
+            <strong>B.</strong> 为了班级评优资格和个人市三好学生评选
+          </div>
+          <div class="choice-btn" onclick="selectLogicAnswer('q4','c')">
+            <strong>C.</strong> 因为林知夏犯了错误需要替她隐瞒
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button class="btn btn-primary" style="padding:14px 40px;font-size:1rem;" onclick="checkLogicAnswers()"><img src="icon-unlock.svg" class="icon-img btn-icon" alt="" aria-hidden="true"> 提交验证</button>
+      </div>
+      <div id="logic-result" style="display:none;margin-top:16px;padding:16px;border-radius:8px;text-align:center;font-size:0.9rem;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 结局页面 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- 结局A -->
+<div class="page" id="page-ending-bad">
+  <div class="ending-screen bad" style="background:linear-gradient(rgba(10,14,26,0.85),rgba(10,14,26,0.95)),url('ending-bad.jpg') center/cover no-repeat;">
+    <h1>随波逐流</h1>
+    <div class="ending-text">
+      <p>你选择了相信那些看似完整的记录和"统一"的口径。</p>
+      <p>林知夏的名字永远地从留校名单中消失了，就像她从未存在过一样。</p>
+      <p>全班同学继续着他们的日常，没有人提起那个被抹去的名字。</p>
+      <p>而你，也成为了这场沉默的帮凶之一。</p>
+      <p style="margin-top:20px;color:#a08080;">有时候，最可怕的不是谎言本身，而是选择相信谎言的人。</p>
+      <p style="margin-top:16px;font-size:0.8rem;opacity:0.5;">这是你找到的结局。是否还有其他可能？</p>
+      <div id="bad-stats"></div>
+    </div>
+    <button class="btn" style="background:rgba(255,255,255,0.1);color:#c8a0a0;border-color:rgba(255,255,255,0.2);" onclick="showPage('page-home')">↺ 重新调查</button>
+  </div>
+</div>
+
+<!-- 结局C：不完整结局 -->
+<div class="page" id="page-ending-incomplete">
+  <div class="ending-screen" style="background:linear-gradient(rgba(26,26,20,0.88),rgba(20,20,26,0.95)),url('ending-bad.jpg') center/cover no-repeat;">
+    <h1 style="color:#c8b878;">雾中真相</h1>
+    <div class="ending-text">
+      <p>你猜到了答案，但真相依然笼罩在迷雾之中。</p>
+      <p>你知道林知夏被从名单上抹去了，知道班长在其中扮演了角色。</p>
+      <p>但那些你没有发现的线索——被撕碎的道歉信、隐藏的密码本、传感器中的异常数据、值班老师的摩斯密码——它们各自讲述着更深层的故事。</p>
+      <p>你触及了真相的边缘，却错过了它的全貌。</p>
+      <p style="margin-top:20px;color:#b8a868;">有些真相，只有走过每一条路的人才能完整地看到。</p>
+      <div id="incomplete-stats"></div>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="btn" style="background:rgba(255,255,255,0.1);color:#c8b878;border-color:rgba(255,255,255,0.2);" onclick="showPage('page-home')">↺ 继续调查</button>
+      <button class="btn" style="background:rgba(255,255,255,0.05);color:#888;border-color:rgba(255,255,255,0.1);" onclick="resetGame()">清除存档</button>
+    </div>
+  </div>
+</div>
+
+<!-- 结局B -->
+<div class="page" id="page-ending-good">
+  <div class="ending-screen good" style="background:linear-gradient(rgba(10,20,15,0.85),rgba(10,14,26,0.95)),url('ending-good.jpg') center/cover no-repeat;">
+    <h1>沉默的晚自习</h1>
+    <div class="ending-text">
+      <p>你揭开了所有的谎言，还原了被掩盖的真相。</p>
+      <p>林知夏没有失踪，也没有遭遇任何超自然事件。</p>
+      <p>她只是被一群人用碎片化的谎言、刻意的沉默和集体的冷漠，从所有记录中"抹去"了。</p>
+      <p>这不是一个关于灵异的故事，这是一个关于<span style="color:#a0c8a0;font-weight:600;">校园霸凌、信息误导和集体沉默</span>的故事。</p>
+      <p style="margin-top:20px;">最可怕的从来不是灵异怪谈，而是一群人的刻意沉默。</p>
+      <p style="margin-top:16px;font-size:0.8rem;opacity:0.5;">你找到了一条通往真相的道路。是否还有未被发现的角落？</p>
+      <div id="good-stats"></div>
+    </div>
+    <div class="truth-archive" style="max-width:600px;margin:20px auto;background:rgba(0,0,0,0.2);">
+      <div class="quote" style="font-size:0.9rem;">
+        "拒绝碎片化信息盲从。<br>
+        学会甄别真假信息。<br>
+        独立逻辑求证。<br>
+        正视校园隐性伤害。<br>
+        勿以沉默与跟风助长恶意。"
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="btn" style="background:rgba(255,255,255,0.1);color:#a0c8a0;border-color:rgba(255,255,255,0.2);" onclick="showPage('page-home')">↺ 重新调查</button>
+      <button class="btn btn-success" onclick="resetGame()">清除存档</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ========== 隐藏彩蛋页面 ========== -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- Meta彩蛋：系统漏洞 -->
+<div class="page" id="page-easter-egg">
+  <div class="school-site" style="background:linear-gradient(135deg,#0a0a0a,#1a1a1a);color:#888;">
+    <div class="site-header" style="background:linear-gradient(135deg,#1a3a1a,#2a4a2a);">
+      <h1><img src="icon-computer.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 系统调试日志</h1>
+      <div class="sub">育华中学信息平台 · 开发者模式 · 仅限内部访问</div>
+    </div>
+    <div class="site-body">
+      <div class="notice-banner warning">
+        <strong><img src="icon-warning.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 警告</strong> 你发现了不该存在的地方。这里记录着系统最深层的数据。
+      </div>
+
+      <div class="card" style="background:#111;border-color:#333;color:#aaa;">
+        <div class="card-title" style="color:#8a9aaa;"><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 隐藏日志 #001</div>
+        <div style="font-family:var(--font-mono);font-size:0.8rem;line-height:2;color:#666;">
+          <p>[2025-10-16 02:33:15] admin@monitor: 开始执行数据清理协议</p>
+          <p>[2025-10-16 02:33:47] admin@monitor: 删除目标：student_20220333</p>
+          <p>[2025-10-16 02:34:12] admin@monitor: 监控记录覆盖完成</p>
+          <p>[2025-10-16 02:34:58] admin@monitor: 签到台账修改完成</p>
+          <p>[2025-10-16 02:35:33] admin@monitor: 公示名单更新完成</p>
+          <p><span style="color:var(--danger);">[2025-10-16 02:35:34] SYSTEM: 检测到异常访问 - 原始备份未被清除</span></p>
+          <p>[2025-10-16 02:36:01] admin@monitor: 操作完成，退出系统</p>
+        </div>
+      </div>
+
+      <div class="card" style="background:#111;border-color:#333;color:#aaa;">
+        <div class="card-title" style="color:#8a9aaa;"><img src="icon-list.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 隐藏日志 #002</div>
+        <div style="font-family:var(--font-mono);font-size:0.8rem;line-height:2;color:#666;">
+          <p>[2025-10-20 23:15:42] SYSTEM: 检测到未授权访问</p>
+          <p>[2025-10-20 23:15:43] SYSTEM: 访问源：外网IP，身份：转学生</p>
+          <p><span style="color:var(--success);">[2025-10-20 23:15:44] SYSTEM: 权限验证通过 - 特殊访问许可已激活</span></p>
+          <p>[2025-10-20 23:15:45] SYSTEM: 欢迎，调查者。</p>
+        </div>
+      </div>
+
+      <div class="card" style="background:#111;border-color:#333;color:#aaa;">
+        <div class="card-title" style="color:#8a9aaa;"><img src="icon-chat.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 开发者留言</div>
+        <div style="font-size:0.85rem;line-height:2;color:#888;">
+          <p>如果你看到了这行文字，说明你已经成功触发了系统的隐藏漏洞。</p>
+          <p>这不是bug，这是一个feature——为那些真正用心调查的人准备的奖励。</p>
+          <p>真相往往藏在最不起眼的地方，就像这段代码，藏在所有页面的最底层。</p>
+          <p style="margin-top:16px;color:var(--success);">恭喜你，侦探。你已经超越了99%的玩家。</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button class="btn btn-primary" onclick="showPage('page-ch5-review')">返回复盘</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 快捷键提示悬浮窗 -->
+<div id="shortcut-hint" style="position:fixed;bottom:20px;left:20px;z-index:300;background:rgba(26,29,35,0.9);color:#8a9aaa;padding:12px 16px;border-radius:8px;font-size:0.75rem;line-height:2;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);display:none;">
+  <strong style="color:#fff;"><img src="icon-keyboard.svg" class="icon-img title-icon" alt="" aria-hidden="true"> 快捷键</strong><br>
+  <span class="kbd">N</span> 便签纸　<span class="kbd">H</span> 提示面板（3级渐进，可回顾）<br>
+  <span class="kbd">S</span> 存档　<span class="kbd">M</span> 音效<br>
+  <span class="kbd">Esc</span> 关闭面板
+</div>
+
+<!-- ========== 页脚 ========== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>育华中学公示网</h3>
+      <p>校园信息发布平台 · 教务处官方运营<br>本网站纯属虚构，仅供娱乐解谜</p>
+    </div>
+    <div class="footer-links">
+      <h4>快速导航</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('page-home');return false;">首页</a></li>
+        <li><a href="#" onclick="showPage('page-ch1-main');return false;">公示名单</a></li>
+        <li><a href="#" onclick="showPage('page-ch2-forum');return false;">留言板</a></li>
+        <li><a href="#" onclick="showPage('page-ch5-review');return false;">调查复盘</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>关于</h4>
+      <ul>
+        <li><a href="#" onclick="resetGame();return false;">重置进度</a></li>
+        <li><a href="#" onclick="saveGame();return false;">手动存档</a></li>
+        <li><a href="#" onclick="toggleNotepad();return false;">便笺</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 育华中学教务处 | 本档案为虚构作品</p>
+  </div>
+</footer>
+
+<script src="paywall.js"></script>
+<script src="audio.js"></script>
+<script src="core.js"></script>
+<script>
+// Hero 幻灯片切换
+let heroSlideIndex = 0;
+let heroSlideTimer = null;
+
+function switchHeroSlide(idx) {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  if (slides[idx]) slides[idx].classList.add('active');
+  if (dots[idx]) dots[idx].classList.add('active');
+  heroSlideIndex = idx;
+}
+
+function autoSwitchHero() {
+  if (document.getElementById('page-home') && document.getElementById('page-home').classList.contains('active')) {
+    heroSlideIndex = (heroSlideIndex + 1) % 3;
+    switchHeroSlide(heroSlideIndex);
+  }
+}
+
+setInterval(autoSwitchHero, 5000);
+
+// 更新导航高亮
+function updateNavHighlight(pageId) {
+  document.querySelectorAll('.header-nav a').forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('data-nav') === pageId) a.classList.add('active');
+  });
+}
+
+// 日期显示
+(function() {
+  const dateEl = document.getElementById('top-bar-date');
+  if (dateEl) {
+    const days = ['日','一','二','三','四','五','六'];
+    const d = new Date();
+    dateEl.textContent = `${d.getFullYear()}年${String(d.getMonth()+1).padStart(2,'0')}月${String(d.getDate()).padStart(2,'0')}日 星期${days[d.getDay()]}`;
+  }
+})();
+</script>
+</body>
+</html>
