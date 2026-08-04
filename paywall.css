@@ -1,0 +1,321 @@
+/* 《晚自习留校名单》自愿支持弹层 v2.0 */
+
+body.paywall-open { overflow: hidden; }
+
+.paywall-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 14, 20, .76);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .26s ease, visibility .26s ease;
+}
+
+.paywall-overlay.paywall-show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.paywall-overlay.paywall-closing { pointer-events: none; }
+
+.paywall-card {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: min(760px, calc(100vh - 32px));
+  overflow: auto;
+  border: 1px solid rgba(195, 164, 111, .42);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(204, 173, 112, .15), transparent 34%),
+    linear-gradient(180deg, #fbfaf6 0%, #f4efe5 100%);
+  color: #312d27;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .42);
+  transform: translateY(18px) scale(.975);
+  transition: transform .26s ease;
+}
+
+.paywall-show .paywall-card { transform: translateY(0) scale(1); }
+
+.paywall-card-inner { padding: 30px 34px 24px; }
+
+.paywall-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(78, 65, 44, .15);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .74);
+  color: #5a5145;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .18s ease, transform .18s ease;
+}
+
+.paywall-close:hover,
+.paywall-close:focus-visible {
+  background: #fff;
+  transform: rotate(4deg);
+  outline: 3px solid rgba(171, 126, 55, .18);
+}
+
+.paywall-header { text-align: center; }
+
+.paywall-voluntary-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border: 1px solid rgba(73, 129, 82, .25);
+  border-radius: 999px;
+  background: #eaf5ec;
+  color: #35633d;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.paywall-title {
+  margin: 0;
+  color: #2d2923;
+  font-family: "Noto Serif SC", serif;
+  font-size: clamp(24px, 4vw, 31px);
+  line-height: 1.28;
+}
+
+.paywall-subtitle {
+  margin: 8px 0 0;
+  color: #817564;
+  font-size: 14px;
+}
+
+.paywall-clarity,
+.paywall-free-note {
+  margin: 20px 0;
+  padding: 13px 15px;
+  border: 1px solid rgba(153, 109, 49, .22);
+  border-radius: 11px;
+  background: rgba(255, 249, 226, .88);
+  color: #67512f;
+  font-size: 14px;
+  line-height: 1.75;
+  text-align: center;
+}
+
+.paywall-body {
+  display: grid;
+  grid-template-columns: minmax(220px, .9fr) minmax(250px, 1.1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.paywall-qr-section { text-align: center; }
+
+.paywall-qr-wrapper {
+  position: relative;
+  width: 220px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid rgba(111, 90, 56, .17);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(73, 56, 30, .11);
+}
+
+.paywall-qr-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.paywall-amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.paywall-payment-name {
+  color: #5f7792;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.paywall-amount {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ead9b5;
+  color: #694e1d;
+  font-size: 18px;
+}
+
+.paywall-steps {
+  padding: 18px 18px 16px;
+  border: 1px solid rgba(77, 68, 53, .10);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .62);
+}
+
+.paywall-steps h3 {
+  margin: 0 0 10px;
+  color: #40382e;
+  font-size: 16px;
+}
+
+.paywall-steps ol {
+  margin: 0;
+  padding-left: 22px;
+  color: #5f564b;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.paywall-no-verify {
+  margin: 12px 0 0;
+  padding-top: 11px;
+  border-top: 1px dashed rgba(92, 79, 58, .18);
+  color: #887b6a;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.paywall-footer { margin-top: 24px; }
+
+.paywall-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.paywall-btn {
+  min-height: 46px;
+  padding: 10px 16px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.paywall-btn:hover { transform: translateY(-1px); }
+.paywall-btn:focus-visible { outline: 3px solid rgba(161, 117, 47, .23); outline-offset: 2px; }
+
+.paywall-btn-support {
+  border: 1px solid #8f692b;
+  background: linear-gradient(180deg, #b78c45, #8f682a);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(115, 82, 31, .20);
+}
+
+.paywall-btn-support:hover { background: linear-gradient(180deg, #c49a54, #98702f); }
+
+.paywall-btn-later {
+  border: 1px solid rgba(77, 68, 53, .18);
+  background: rgba(255, 255, 255, .72);
+  color: #514a41;
+}
+
+.paywall-btn-later:hover { background: #fff; }
+.paywall-btn-wide { width: min(320px, 100%); margin: 18px auto 0; }
+
+.paywall-footer-note {
+  margin: 12px 0 0;
+  color: #8a7f71;
+  font-size: 12px;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.paywall-studio {
+  margin-top: 15px;
+  color: #a1988d;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.paywall-supported-state {
+  padding: 22px 8px 8px;
+  text-align: center;
+}
+
+.paywall-supported-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 16px;
+  border: 1px solid rgba(145, 99, 34, .22);
+  border-radius: 50%;
+  background: #f4e7c9;
+  color: #8f6427;
+  font-size: 42px;
+}
+
+.paywall-supported-copy {
+  max-width: 470px;
+  margin: 14px auto 0;
+  color: #6d6458;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.paywall-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 34px;
+  z-index: 100001;
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  background: rgba(28, 32, 38, .94);
+  color: #fff;
+  font-size: 13px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .28);
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  transition: opacity .26s ease, transform .26s ease;
+}
+
+.paywall-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 650px) {
+  .paywall-overlay { padding: 10px; align-items: flex-end; }
+  .paywall-card {
+    max-height: calc(100vh - 18px);
+    border-radius: 18px 18px 12px 12px;
+  }
+  .paywall-card-inner { padding: 26px 18px 20px; }
+  .paywall-body { grid-template-columns: 1fr; gap: 16px; }
+  .paywall-qr-wrapper { width: 190px; }
+  .paywall-steps { text-align: left; }
+  .paywall-btns { grid-template-columns: 1fr; }
+  .paywall-btn-later { order: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paywall-overlay,
+  .paywall-card,
+  .paywall-btn,
+  .paywall-toast { transition: none !important; }
+}
